@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_pattern"
-    tools:context="com.ivanchug.moneytracker.MainActivity">
+    tools:context="com.ivanchug.moneytracker.TempActivity"
+    style="@style/AppBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +13,7 @@
         android:paddingEnd="@dimen/margin_l">
 
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/add_name"
             android:layout_width="@dimen/zero_size"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +25,7 @@
             android:layout_gravity="center_vertical" />
 
         <EditText
-            android:id="@+id/amount"
+            android:id="@+id/add_amount"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:hint="@string/amount_hint"
@@ -41,7 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/money_sign"
+            android:text="@string/rouble"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_l" />
 
