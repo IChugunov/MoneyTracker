@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             items.add(new Item("Car", 10000));
             items.add(new Item("Apple", 400));
             items.add(new Item("car", 100));
-            items.add(new Item("apple", 400));
+            items.add(new Item("Сковородка с крышкой и антипригарным покрытием", 400));
             items.add(new Item("car", 100));
             items.add(new Item("apple", 400));
             items.add(new Item("CAR", 10));
