@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="backgroundColor">#84c0c5</color>
     <color name="textColor">#ffffff</color>
+    <color name="golden_yellow">#fcc418</color>
+    <color name="dusty_orange">#e6ae1e</color>
 </resources>
