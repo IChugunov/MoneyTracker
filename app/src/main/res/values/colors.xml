@@ -7,4 +7,8 @@
     <color name="textColor">#ffffff</color>
     <color name="golden_yellow">#fcc418</color>
     <color name="dusty_orange">#e6ae1e</color>
+    <color name="light_yellow">#f6f69d</color>
+    <color name="pale_teal">#96cab9</color>
+    <color name="light_blue_grey">#dbece6</color>
+    <color name="tealish">#1ca498</color>
 </resources>

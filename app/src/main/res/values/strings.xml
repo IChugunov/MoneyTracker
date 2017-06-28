@@ -3,5 +3,13 @@
     <string name="name_hint">Название</string>
     <string name="money_sign">Р</string>
     <string name="amount_hint">0</string>
-    <string name="rouble">\u20bd</string>
+    <string name="rouble">Р</string>
+    <string name="expenses">расходы</string>
+    <string name="incomes">доходы</string>
+    <string name="balance">Баланс</string>
+    <array name="main_pager_titles">
+        <item>@string/expenses</item>
+        <item>@string/incomes</item>
+        <item>@string/balance</item>
+    </array>
 </resources>
