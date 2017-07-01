@@ -1,60 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ivanchug.moneytracker.AddActivity"
     style="@style/AppBackground">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:paddingStart="@dimen/margin_l"
-        android:paddingEnd="@dimen/margin_l">
+        app:elevation="4dp">
 
-        <EditText
-            android:id="@+id/add_name"
-            android:layout_width="@dimen/zero_size"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/name_hint"
-            android:textSize="@dimen/text_size"
-            android:maxLines="1"
-            android:inputType="text"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center_vertical" />
-
-        <EditText
-            android:id="@+id/add_amount"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/amount_hint"
-            android:textSize="@dimen/text_size"
-            android:inputType="number"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center_vertical"
-            android:gravity="end" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rouble"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/margin_l" />
-
-        <TextView
-            android:id="@+id/add"
-            android:enabled="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="40sp"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
             android:paddingStart="@dimen/margin_l"
-            android:layout_gravity="center_vertical"
-            tools:ignore="HardcodedText" />
+            android:paddingEnd="@dimen/margin_l">
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/add_name"
+                android:layout_width="@dimen/zero_size"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/name_hint"
+                android:textSize="@dimen/text_size"
+                android:maxLines="1"
+                android:inputType="text"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical" />
 
+            <EditText
+                android:id="@+id/add_amount"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/amount_hint"
+                android:textSize="@dimen/text_size"
+                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:gravity="end" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rouble"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/margin_l" />
+
+            <TextView
+                android:id="@+id/add"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="40sp"
+                android:paddingStart="@dimen/margin_l"
+                android:layout_gravity="center_vertical"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </FrameLayout>

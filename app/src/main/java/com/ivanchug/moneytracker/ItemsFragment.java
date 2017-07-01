@@ -71,7 +71,7 @@ public class ItemsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
             Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
-            Toast.makeText(getContext(), item.name + item.price, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_SHORT).show();
         }
     }
 
