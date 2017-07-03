@@ -10,8 +10,10 @@ public class Item implements Serializable {
     public static final String TYPE_EXPENSE = "expense";
     public static final String TYPE_INCOME = "income";
 
-    public String name, type;
-    public int id = -1, price;
+    public String name;
+    public String type;
+    public int id = -1;
+    public int price;
 
     public Item(String name, int price, String type) {
         this.name = name;
