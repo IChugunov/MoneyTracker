@@ -15,27 +15,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     private List<Item> items = new ArrayList<>();
     private Context context;
 
-    public ItemsAdapter() {
-        items.add(new Item("Car", 10000));
-        items.add(new Item("Apple", 400));
-        items.add(new Item("car", 100));
-        items.add(new Item("Сковородка с крышкой и антипригарным покрытием", 400));
-        items.add(new Item("car", 100));
-        items.add(new Item("apple", 400));
-        items.add(new Item("CAR", 10));
-        items.add(new Item("apple", 400));
-        items.add(new Item("car", 100));
-        items.add(new Item("apple", 400));
-        items.add(new Item("car", 100));
-        items.add(new Item("apple", 4));
-        items.add(new Item("car", 100));
-        items.add(new Item("apple", 400));
-    }
+
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item, null));
+        return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false));
     }
 
     @Override
@@ -50,9 +35,27 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         return items.size();
     }
 
-    void add(Item item) {
+    public void add(Item item) {
         items.add(0, item);
         notifyItemInserted(0);
+    }
+
+    public void addAll(List<Item> items) {
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        items.clear();
+    }
+
+    public void updateId(Item item, int id) {
+        add(item);
+    }
+
+    public void remove(Item item) {
+        items.remove(item);
+        notifyDataSetChanged();
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
