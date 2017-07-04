@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_item"
     android:layout_margin="@dimen/margin_small">
 
     <TextView
@@ -10,15 +11,14 @@
         style="@style/TextWhite"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/golden_yellow" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/price"
         style="@style/TextWhite"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/dusty_orange"
+        android:background="@color/amount_bg"
         android:gravity="center_vertical"
         android:textStyle="bold" />
 
