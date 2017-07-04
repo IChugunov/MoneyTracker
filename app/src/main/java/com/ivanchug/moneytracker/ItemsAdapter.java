@@ -2,6 +2,7 @@ package com.ivanchug.moneytracker;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
     private List<Item> items = new ArrayList<>();
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private Context context;
 
 
@@ -28,6 +30,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         final Item item = items.get(position);
         holder.name.setText(item.name);
         holder.price.setText(item.price + context.getString(R.string.rouble));
+        holder.container.setActivated(selectedItems.get(position, false));
     }
 
     @Override
@@ -45,6 +48,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyDataSetChanged();
     }
 
+    public void toggleSelection(int pos) {
+        if (selectedItems.get(pos, false)) {
+            selectedItems.delete(pos);
+        } else {
+            selectedItems.put(pos, true);
+        }
+        notifyItemChanged(pos);
+    }
+
+
     public void clear() {
         items.clear();
     }
@@ -53,18 +66,35 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         add(item);
     }
 
-    public void remove(Item item) {
-        items.remove(item);
+    public Item remove(int position) {
+        final Item item = items.remove(position);
+        notifyDataSetChanged();
+        return item;
+    }
+
+    public void clearSelections() {
+        selectedItems.clear();
         notifyDataSetChanged();
     }
 
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<>(selectedItems.size());
+        for (int i = 0; i < selectedItems.size(); i++) {
+            items.add(selectedItems.keyAt(i));
+        }
+        return items;
+    }
+
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name, price;
+        private final TextView name;
+        private final TextView price;
+        private final View container;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
             price = (TextView) itemView.findViewById(R.id.price);
+            container = itemView.findViewById(R.id.item_container);
         }
     }
 

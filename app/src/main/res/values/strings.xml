@@ -10,6 +10,8 @@
     <string name="error">Произошла ошибка</string>
     <string name="money_tracker">Учет бюджета</string>
     <string name="add_item">Новая запись</string>
+    <string name="confirm_remove">Удалить выделенные элементы?</string>
+    <string name="items_selected">выбрано</string>
     <array name="main_pager_titles">
         <item>@string/expenses</item>
         <item>@string/incomes</item>
