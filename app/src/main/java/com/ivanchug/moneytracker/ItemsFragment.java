@@ -83,6 +83,7 @@ public class ItemsFragment extends Fragment {
                                     actionMode.finish();
                                 }
                             })
+                            .setCancelable(false)
                             .show();
                     return true;
             }
