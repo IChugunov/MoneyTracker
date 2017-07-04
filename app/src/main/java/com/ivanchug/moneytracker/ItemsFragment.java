@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,15 @@ public class ItemsFragment extends Fragment {
                 final Intent intent = new Intent(getActivity(), AddActivity.class);
                 intent.putExtra(AddActivity.EXTRA_TYPE, type);
                 startActivityForResult(intent, AddActivity.RC_ADD_ITEM);
+            }
+        });
+
+        final SwipeRefreshLayout refresh = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadItems();
+                refresh.setRefreshing(false);
             }
         });
 
