@@ -1,5 +1,6 @@
 package com.ivanchug.moneytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,8 @@ import com.ivanchug.moneytracker.api.Result;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Иван on 27.06.2017.
  */
@@ -33,11 +36,12 @@ public class ItemsFragment extends Fragment {
 
     private String type;
     private LSApi api;
+    private View add;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.items, null);
+        return inflater.inflate(R.layout.fragment_items, null);
     }
 
     @Override
@@ -48,8 +52,27 @@ public class ItemsFragment extends Fragment {
 
         type = getArguments().getString(ARG_TYPE);
         api = ((LsApp) getActivity().getApplication()).api();
+        add = view.findViewById(R.id.add_flbutton);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final Intent intent = new Intent(getActivity(), AddActivity.class);
+                intent.putExtra(AddActivity.EXTRA_TYPE, type);
+                startActivityForResult(intent, AddActivity.RC_ADD_ITEM);
+            }
+        });
 
         loadItems();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
+            Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
+            Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadItems() {

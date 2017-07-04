@@ -8,6 +8,8 @@
     <string name="incomes">доходы</string>
     <string name="balance">Баланс</string>
     <string name="error">Произошла ошибка</string>
+    <string name="money_tracker">Учет бюджета</string>
+    <string name="add_item">Новая запись</string>
     <array name="main_pager_titles">
         <item>@string/expenses</item>
         <item>@string/incomes</item>
