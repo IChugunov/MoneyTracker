@@ -25,14 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
         tabs = (TabLayout) findViewById(R.id.tabs);
         pages = (ViewPager) findViewById(R.id.pages);
-
-        initUI();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startActivity(new Intent(this, AuthActivity.class));
+        if (!((LsApp) getApplication()).isLoggedIn())
+            startActivity(new Intent(this, AuthActivity.class));
+        else {
+            initUI();
+        }
     }
 
     private void initUI() {

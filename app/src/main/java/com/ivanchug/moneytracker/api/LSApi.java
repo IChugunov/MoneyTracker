@@ -6,7 +6,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -16,7 +15,9 @@ import retrofit2.http.Query;
 
 public interface LSApi {
 
-    @Headers("Content-Type: application/json")
+    @GET("auth")
+    Call<AuthResult> auth(@Query("social_user_id") String socialUserId);
+
     @GET("items")
     Call<List<Item>> items(@Query("type") String type);
 
