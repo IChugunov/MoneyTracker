@@ -1,6 +1,7 @@
 package com.ivanchug.moneytracker;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -26,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         pages = (ViewPager) findViewById(R.id.pages);
 
         initUI();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startActivity(new Intent(this, AuthActivity.class));
     }
 
     private void initUI() {
