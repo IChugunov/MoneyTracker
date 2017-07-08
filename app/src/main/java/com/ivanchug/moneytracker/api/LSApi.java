@@ -26,4 +26,7 @@ public interface LSApi {
 
     @POST("items/remove")
     Call<Result> remove(@Query("id") int id);
+
+    @GET("balance")
+    Call<BalanceResult> balance();
 }
