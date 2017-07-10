@@ -72,9 +72,9 @@ public class BalanceFragment extends Fragment {
             @Override
             public void onLoadFinished(Loader<BalanceResult> loader, BalanceResult data) {
                 if (data != null && data.isSuccess()) {
-                    balance.setText((data.totalIncome - data.totalExpenses) + getString(R.string.rouble));
-                    expense.setText(data.totalExpenses + getString(R.string.rouble));
-                    income.setText(data.totalIncome + getString(R.string.rouble));
+                    balance.setText(getString(R.string.price, data.totalIncome - data.totalExpenses));
+                    expense.setText(getString(R.string.price, data.totalExpenses));
+                    income.setText(getString(R.string.price, data.totalIncome));
                     diagram.update(data.totalExpenses, data.totalIncome);
                 } else {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
