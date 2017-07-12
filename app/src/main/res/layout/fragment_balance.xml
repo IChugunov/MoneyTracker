@@ -1,13 +1,86 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="40dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.ivanchug.moneytracker.BalanceFragment">
 
+    <TextView
+        android:id="@+id/balance_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:maxLines="1"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_xxlarge"
+        tools:text="48000 \u20bd" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/balance" />
+        android:id="@+id/balance_caption"
+        android:layout_below="@id/balance_amount"
+        android:text="@string/your_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/colorComment"
+        android:textSize="@dimen/text_large" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/expense_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_widthPercent="50%"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:textColor="@color/colorExpense"
+        android:textSize="@dimen/text_xlarge"
+        android:layout_below="@id/balance_caption"
+        tools:text="15000 \u20bd" />
+
+    <TextView
+        android:id="@+id/income_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/balance_caption"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:textColor="@color/colorItem"
+        android:textSize="@dimen/text_xlarge"
+        app:layout_widthPercent="50%"
+        tools:text="95000 \u20bd" />
+
+    <TextView
+        android:id="@+id/expense_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_widthPercent="50%"
+        android:text="@string/expenses"
+        android:layout_below="@id/income_amount"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorComment"
+        android:textSize="@dimen/text_medium" />
+
+    <TextView
+        android:id="@+id/income_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/income_amount"
+        android:text="@string/incomes"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorComment"
+        android:textSize="@dimen/text_medium"
+        app:layout_widthPercent="50%" />
+
+    <com.ivanchug.moneytracker.DiagramView
+        android:id="@+id/diagram"
+        android:layout_margin="30dp"
+        android:layout_below="@+id/expense_caption"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</android.support.percent.PercentRelativeLayout>

@@ -13,6 +13,8 @@
     <string name="confirm_remove">Удалить выделенные элементы?</string>
     <string name="items_selected">выбрано</string>
     <string name="auth_text">Ваш незаменимый помощник \n в управлении бюджетом</string>
+    <string name="your_balance">ваш баланс</string>
+    <string name="price">%1$d Р</string>
     <array name="main_pager_titles">
         <item>@string/expenses</item>
         <item>@string/incomes</item>

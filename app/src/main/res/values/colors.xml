@@ -10,4 +10,6 @@
     <color name="light_blue_grey">#dbece6</color>
     <color name="colorItem">#fcc31e</color>
     <color name="colorItemSelected">#985305</color>
+    <color name="colorExpense">#f86c3f</color>
+    <color name="colorComment">#95989a</color>
 </resources>
