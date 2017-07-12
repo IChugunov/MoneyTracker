@@ -73,7 +73,7 @@ public class ItemsFragment extends Fragment {
                                 public void onClick(DialogInterface dialog, int which) {
                                     List<Integer> selectedItems = adapter.getSelectedItems();
                                     for (int i = selectedItems.size() - 1; i >= 0; i--)
-                                        removeItem(selectedItems.get(i));
+                                        removeItem(adapter.remove(selectedItems.get(i)));
                                 }
                             })
                             .setNegativeButton(android.R.string.cancel, null)
@@ -99,9 +99,7 @@ public class ItemsFragment extends Fragment {
         }
     };
 
-    private void removeItem(int id) {
-        adapter.remove(id);
-    }
+
 
     @Nullable
     @Override
@@ -182,7 +180,7 @@ public class ItemsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == AddActivity.RC_ADD_ITEM && resultCode == RESULT_OK) {
             Item item = (Item) data.getSerializableExtra(AddActivity.RESULT_ITEM);
-            Toast.makeText(getContext(), item.name + " " + item.price, Toast.LENGTH_SHORT).show();
+            addItem(item);
         }
     }
 
@@ -275,7 +273,7 @@ public class ItemsFragment extends Fragment {
                 if (data == null || !data.isSuccess()) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
-                    // adapter.remove(item);
+                    //adapter.remove(item);
                 }
             }
 

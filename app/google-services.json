@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "23016667488",
+    "project_id": "moneytracker-172822"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23016667488:android:6bc448b9cc0b8543",
+        "android_client_info": {
+          "package_name": "com.ivanchug.moneytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23016667488-2kvt9sdf29r10vcicjgdldijarc6bch7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ivanchug.moneytracker",
+            "certificate_hash": "943955bcb97e936c5d08b438cd28b68118864788"
+          }
+        },
+        {
+          "client_id": "23016667488-3t0b3b3i4dct9fc0prceain2br9uupod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxKAp6-jQHhkOexT0z8a8pm8uqPOpaHFo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

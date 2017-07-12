@@ -24,12 +24,23 @@
         </activity>
         <activity
             android:name=".AddActivity"
-            android:screenOrientation="portrait"
             android:label="@string/add_item"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AuthActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Toolbar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
