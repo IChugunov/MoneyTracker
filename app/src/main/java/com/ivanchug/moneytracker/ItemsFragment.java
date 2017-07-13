@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.api.AddResult;
+import com.ivanchug.moneytracker.api.Item;
 import com.ivanchug.moneytracker.api.LSApi;
 import com.ivanchug.moneytracker.api.Result;
 
