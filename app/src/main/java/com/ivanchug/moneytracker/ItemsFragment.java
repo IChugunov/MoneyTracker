@@ -117,6 +117,7 @@ public class ItemsFragment extends Fragment {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
+        itemAnimator.setChangeDuration(500);
         items.setItemAnimator(itemAnimator);
 
         type = getArguments().getString(ARG_TYPE);
