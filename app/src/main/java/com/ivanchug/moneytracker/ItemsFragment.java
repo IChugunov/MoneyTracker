@@ -37,8 +37,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class ItemsFragment extends Fragment {
-
-    private static final int LOADER_ITEMS = 0;
+    private static final int LOADER_ITEMS_EXPENSE = -1;
+    private static final int LOADER_ITEMS_INCOME = 0;
     private static final int LOADER_ADD = 1;
     private static final int LOADER_REMOVE = 2;
 
@@ -200,7 +200,10 @@ public class ItemsFragment extends Fragment {
     }
 
     private void loadItems() {
-        getLoaderManager().initLoader(LOADER_ITEMS, null, new LoaderManager.LoaderCallbacks<List<Item>>() {
+        Integer loaderId = LOADER_ITEMS_EXPENSE;
+        if (type.equals(Item.TYPE_INCOME))
+            loaderId = LOADER_ITEMS_INCOME;
+        getLoaderManager().initLoader(loaderId, null, new LoaderManager.LoaderCallbacks<List<Item>>() {
             @Override
             public Loader<List<Item>> onCreateLoader(int id, Bundle args) {
                 return new AsyncTaskLoader<List<Item>>(getContext()) {
