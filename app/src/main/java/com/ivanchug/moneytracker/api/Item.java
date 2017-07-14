@@ -20,4 +20,27 @@ public class Item implements Serializable {
         this.price = price;
         this.type = type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (id != item.id) return false;
+        if (price != item.price) return false;
+        if (name != null ? !name.equals(item.name) : item.name != null) return false;
+        return type != null ? type.equals(item.type) : item.type == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + id;
+        result = 31 * result + price;
+        return result;
+    }
 }

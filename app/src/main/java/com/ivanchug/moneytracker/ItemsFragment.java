@@ -117,7 +117,6 @@ public class ItemsFragment extends Fragment {
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
-        itemAnimator.setChangeDuration(500);
         items.setItemAnimator(itemAnimator);
 
         type = getArguments().getString(ARG_TYPE);
@@ -237,7 +236,7 @@ public class ItemsFragment extends Fragment {
     }
 
     private void addItem(final Item item) {
-        getLoaderManager().restartLoader(LOADER_ADD, null, new LoaderManager.LoaderCallbacks<AddResult>() {
+        getLoaderManager().restartLoader(LOADER_ADD + item.hashCode(), null, new LoaderManager.LoaderCallbacks<AddResult>() {
             @Override
             public Loader<AddResult> onCreateLoader(int id, Bundle args) {
                 return new AsyncTaskLoader<AddResult>(getContext()) {
@@ -270,7 +269,7 @@ public class ItemsFragment extends Fragment {
     }
 
     private void removeItem(final Item item) {
-        getLoaderManager().restartLoader(LOADER_REMOVE, null, new LoaderManager.LoaderCallbacks<Result>() {
+        getLoaderManager().restartLoader(LOADER_REMOVE + item.hashCode(), null, new LoaderManager.LoaderCallbacks<Result>() {
             @Override
             public Loader<Result> onCreateLoader(int id, Bundle args) {
                 return new AsyncTaskLoader<Result>(getContext()) {
