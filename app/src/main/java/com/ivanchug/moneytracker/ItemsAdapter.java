@@ -51,6 +51,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     }
 
     public void toggleSelection(int pos) {
+        if (pos == -1)
+            return;
         if (selectedItems.get(pos, false)) {
             selectedItems.delete(pos);
         } else {
