@@ -191,10 +191,10 @@ public class ItemsFragment extends Fragment {
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisible() && isResumed()) {
-            adapter.notifyDataSetChanged();
+    public void onResume() {
+        super.onResume();
+        if (adapter.getItemCount() == 0) {
+            loadItems();
         }
     }
 
