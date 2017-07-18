@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         tabs = (TabLayout) findViewById(R.id.tabs);
         pages = (ViewPager) findViewById(R.id.pages);
+
+        Item.setNextId(((LsApp) getApplication()).getItemsNextId());
     }
 
     @Override
@@ -37,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
         else {
             initUI();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ((LsApp) getApplication()).setItemsNextId(Item.getNextId());
     }
 
     private void initUI() {
@@ -68,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             itemsFragment.setArguments(args);
             return itemsFragment;
         }
+
 
         @Override
         public CharSequence getPageTitle(int position) {

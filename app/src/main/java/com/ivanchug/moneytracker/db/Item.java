@@ -10,15 +10,19 @@ public class Item implements Serializable {
     public static final String TYPE_EXPENSE = "expense";
     public static final String TYPE_INCOME = "income";
 
-    public String name;
-    public String type;
-    public int id;
-    public int price;
+
+    private static long nextId = 0;
+
+    private String name;
+    private String type;
+    private long id;
+    private int price;
 
     public Item(String name, int price, String type) {
         this.name = name;
         this.price = price;
         this.type = type;
+        id = nextId++;
     }
 
     @Override
@@ -39,8 +43,32 @@ public class Item implements Serializable {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + id;
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + price;
         return result;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public static long getNextId() {
+        return nextId;
+    }
+
+    public static void setNextId(long nextId) {
+        Item.nextId = nextId;
     }
 }

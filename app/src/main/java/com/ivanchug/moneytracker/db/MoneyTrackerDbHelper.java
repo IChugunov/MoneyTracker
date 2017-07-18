@@ -72,11 +72,11 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     public Item addItem(SQLiteDatabase db, Item item) {
         try {
             ContentValues values = new ContentValues();
-            values.put("NAME", item.name);
-            values.put("PRICE", item.price);
-            values.put("TYPE", item.type);
+            values.put("NAME", item.getName());
+            values.put("PRICE", item.getPrice());
+            values.put("TYPE", item.getType());
             db.insert("ITEMS", null, values);
-            addToBalance(db, item.type, item.price);
+            addToBalance(db, item.getType(), item.getPrice());
             return item;
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,8 +88,8 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public Item removeItem(SQLiteDatabase db, Item item) {
         try {
-            db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ?", new String[]{item.name, Integer.toString(item.price), item.type});
-            removeFromBalance(db, item.type, item.price);
+            db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ?", new String[]{item.getName(), Integer.toString(item.getPrice()), item.getType()});
+            removeFromBalance(db, item.getType(), item.getPrice());
             return item;
         } catch (Exception e) {
             e.printStackTrace();
