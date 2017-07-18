@@ -30,11 +30,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 + "PRICE INTEGER, "
                 + "TYPE TEXT);");
 
-        ContentValues itemValues = new ContentValues();
-        itemValues.put("NAME", "одежда");
-        itemValues.put("PRICE", 1234);
-        itemValues.put("TYPE", Item.TYPE_EXPENSE);
-        db.insert("ITEMS", null, itemValues);
+
     }
 
     @Override
@@ -55,11 +51,19 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addItem(Item item) {
-
+    public Item addItem(SQLiteDatabase db, Item item) {
+        ContentValues values = new ContentValues();
+        values.put("NAME", item.name);
+        values.put("PRICE", item.price);
+        values.put("TYPE", item.type);
+        db.insert("ITEMS", null, values);
+        db.close();
+        return item;
     }
 
-    public void removeItem(Item item) {
-
+    public Item removeItem(SQLiteDatabase db, Item item) {
+        db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ?", new String[]{item.name, Integer.toString(item.price), item.type});
+        db.close();
+        return item;
     }
 }

@@ -12,7 +12,7 @@ public class Item implements Serializable {
 
     public String name;
     public String type;
-    public int id = -1;
+    public int id;
     public int price;
 
     public Item(String name, int price, String type) {

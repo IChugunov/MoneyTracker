@@ -23,11 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ivanchug.moneytracker.db.AddResult;
 import com.ivanchug.moneytracker.db.Item;
 import com.ivanchug.moneytracker.db.LSApi;
 import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
-import com.ivanchug.moneytracker.db.Result;
 
 import java.util.List;
 
@@ -240,14 +238,15 @@ public class ItemsFragment extends Fragment {
     }
 
     private void addItem(final Item item) {
-        getLoaderManager().restartLoader(LOADER_ADD + item.hashCode(), null, new LoaderManager.LoaderCallbacks<AddResult>() {
+        getLoaderManager().restartLoader(LOADER_ADD + item.hashCode(), null, new LoaderManager.LoaderCallbacks<Item>() {
             @Override
-            public Loader<AddResult> onCreateLoader(int id, Bundle args) {
-                return new AsyncTaskLoader<AddResult>(getContext()) {
+            public Loader<Item> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<Item>(getContext()) {
                     @Override
-                    public AddResult loadInBackground() {
+                    public Item loadInBackground() {
                         try {
-                            return api.add(item.name, item.price, item.type).execute().body();
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.addItem(dbHelper.getReadableDatabase(), item);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;
@@ -257,30 +256,31 @@ public class ItemsFragment extends Fragment {
             }
 
             @Override
-            public void onLoadFinished(Loader<AddResult> loader, AddResult data) {
-                if (data == null || !data.isSuccess()) {
+            public void onLoadFinished(Loader<Item> loader, Item data) {
+                if (data == null) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
-                    adapter.updateId(item, data.id);
+                    adapter.add(item);
                 }
             }
 
             @Override
-            public void onLoaderReset(Loader<AddResult> loader) {
+            public void onLoaderReset(Loader<Item> loader) {
 
             }
         }).forceLoad();
     }
 
     private void removeItem(final Item item) {
-        getLoaderManager().restartLoader(LOADER_REMOVE + item.hashCode(), null, new LoaderManager.LoaderCallbacks<Result>() {
+        getLoaderManager().restartLoader(LOADER_REMOVE + item.hashCode(), null, new LoaderManager.LoaderCallbacks<Item>() {
             @Override
-            public Loader<Result> onCreateLoader(int id, Bundle args) {
-                return new AsyncTaskLoader<Result>(getContext()) {
+            public Loader<Item> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<Item>(getContext()) {
                     @Override
-                    public Result loadInBackground() {
+                    public Item loadInBackground() {
                         try {
-                            return api.remove(item.id).execute().body();
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.removeItem(dbHelper.getReadableDatabase(), item);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;
@@ -290,8 +290,8 @@ public class ItemsFragment extends Fragment {
             }
 
             @Override
-            public void onLoadFinished(Loader<Result> loader, Result data) {
-                if (data == null || !data.isSuccess()) {
+            public void onLoadFinished(Loader<Item> loader, Item data) {
+                if (data == null) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     //adapter.remove(item);
@@ -299,7 +299,7 @@ public class ItemsFragment extends Fragment {
             }
 
             @Override
-            public void onLoaderReset(Loader<Result> loader) {
+            public void onLoaderReset(Loader<Item> loader) {
 
             }
         }).forceLoad();
