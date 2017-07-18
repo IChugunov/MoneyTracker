@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.db.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         final Item item = items.get(position);
-        holder.name.setText(item.name);
-        holder.price.setText(item.price + context.getString(R.string.rouble));
+        holder.name.setText(item.getName());
+        holder.price.setText(item.getPrice() + context.getString(R.string.rouble));
         holder.container.setActivated(selectedItems.get(position, false));
     }
 
@@ -66,9 +66,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         items.clear();
     }
 
-    public void updateId(Item item, int id) {
-        add(item);
-    }
 
     public Item remove(int position) {
         final Item item = items.remove(position);

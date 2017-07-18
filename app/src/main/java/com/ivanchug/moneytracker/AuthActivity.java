@@ -14,7 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.ivanchug.moneytracker.api.AuthResult;
+import com.ivanchug.moneytracker.db.AuthResult;
 
 import java.io.IOException;
 

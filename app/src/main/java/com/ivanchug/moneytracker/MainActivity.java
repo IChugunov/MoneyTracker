@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.db.Item;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabs = (TabLayout) findViewById(R.id.tabs);
         pages = (ViewPager) findViewById(R.id.pages);
+
     }
 
     @Override
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             initUI();
         }
     }
+
 
     private void initUI() {
         if (pages.getAdapter() != null)
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             itemsFragment.setArguments(args);
             return itemsFragment;
         }
+
 
         @Override
         public CharSequence getPageTitle(int position) {
