@@ -246,7 +246,7 @@ public class ItemsFragment extends Fragment {
                     public Item loadInBackground() {
                         try {
                             MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
-                            return dbHelper.addItem(dbHelper.getReadableDatabase(), item);
+                            return dbHelper.addItem(dbHelper.getWritableDatabase(), item);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;
@@ -280,7 +280,7 @@ public class ItemsFragment extends Fragment {
                     public Item loadInBackground() {
                         try {
                             MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
-                            return dbHelper.removeItem(dbHelper.getReadableDatabase(), item);
+                            return dbHelper.removeItem(dbHelper.getWritableDatabase(), item);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;

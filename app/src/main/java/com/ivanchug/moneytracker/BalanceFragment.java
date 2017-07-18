@@ -14,8 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.db.BalanceResult;
-
-import java.io.IOException;
+import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 
 
 /**
@@ -60,8 +59,9 @@ public class BalanceFragment extends Fragment {
                     @Override
                     public BalanceResult loadInBackground() {
                         try {
-                            return ((LsApp) getActivity().getApplication()).api().balance().execute().body();
-                        } catch (IOException e) {
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.getBalance(dbHelper.getReadableDatabase());
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         return null;
@@ -71,7 +71,7 @@ public class BalanceFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<BalanceResult> loader, BalanceResult data) {
-                if (data != null && data.isSuccess()) {
+                if (data != null) {
                     balance.setText(getString(R.string.price, data.totalIncome - data.totalExpenses));
                     expense.setText(getString(R.string.price, data.totalExpenses));
                     income.setText(getString(R.string.price, data.totalIncome));
