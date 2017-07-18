@@ -23,10 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ivanchug.moneytracker.api.AddResult;
-import com.ivanchug.moneytracker.api.Item;
-import com.ivanchug.moneytracker.api.LSApi;
-import com.ivanchug.moneytracker.api.Result;
+import com.ivanchug.moneytracker.db.AddResult;
+import com.ivanchug.moneytracker.db.Item;
+import com.ivanchug.moneytracker.db.LSApi;
+import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
+import com.ivanchug.moneytracker.db.Result;
 
 import java.util.List;
 
@@ -208,8 +209,11 @@ public class ItemsFragment extends Fragment {
                 return new AsyncTaskLoader<List<Item>>(getContext()) {
                     @Override
                     public List<Item> loadInBackground() {
+
                         try {
-                            return api.items(type).execute().body();
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.getItems(dbHelper.getReadableDatabase(), type);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;

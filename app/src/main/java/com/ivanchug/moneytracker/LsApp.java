@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ivanchug.moneytracker.api.LSApi;
+import com.ivanchug.moneytracker.db.LSApi;
 
 import java.io.IOException;
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.db.Item;
 
 import java.util.ArrayList;
 import java.util.List;

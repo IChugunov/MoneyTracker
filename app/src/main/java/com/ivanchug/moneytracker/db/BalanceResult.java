@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker.api;
+package com.ivanchug.moneytracker.db;
 
 /**
  * Created by Иван on 08.07.2017.
