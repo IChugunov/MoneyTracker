@@ -28,7 +28,8 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "NAME TEXT, "
                 + "PRICE INTEGER, "
-                + "TYPE TEXT);");
+                + "TYPE TEXT, " +
+                "ID INTEGER);");
 
         db.execSQL("CREATE TABLE BALANCE ("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -51,12 +52,13 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public List<Item> getItems(SQLiteDatabase db, String type) {
 
-        try (Cursor cursor = db.query("ITEMS", new String[]{"NAME", "PRICE"}, "TYPE = ?", new String[]{type}, null, null, null)) {
+        try (Cursor cursor = db.query("ITEMS", new String[]{"NAME", "PRICE", "ID"}, "TYPE = ?", new String[]{type}, null, null, null)) {
             List<Item> result = new ArrayList<>();
             if (cursor.moveToLast()) {
-                result.add(new Item(cursor.getString(0), cursor.getInt(1), type));
+                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2)));
+                Item.setNextId(cursor.getLong(2));
                 while (cursor.moveToPrevious())
-                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type));
+                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2)));
             }
 
             return result;
@@ -75,6 +77,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             values.put("NAME", item.getName());
             values.put("PRICE", item.getPrice());
             values.put("TYPE", item.getType());
+            values.put("ID", item.getId());
             db.insert("ITEMS", null, values);
             addToBalance(db, item.getType(), item.getPrice());
             return item;
@@ -88,7 +91,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public Item removeItem(SQLiteDatabase db, Item item) {
         try {
-            db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ?", new String[]{item.getName(), Integer.toString(item.getPrice()), item.getType()});
+            db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ? AND ID = ?", new String[]{item.getName(), Integer.toString(item.getPrice()), item.getType(), Long.toString(item.getId())});
             removeFromBalance(db, item.getType(), item.getPrice());
             return item;
         } catch (Exception e) {

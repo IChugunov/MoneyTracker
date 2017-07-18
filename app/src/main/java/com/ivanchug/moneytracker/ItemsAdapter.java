@@ -66,9 +66,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         items.clear();
     }
 
-    public void updateId(Item item, int id) {
-        add(item);
-    }
 
     public Item remove(int position) {
         final Item item = items.remove(position);

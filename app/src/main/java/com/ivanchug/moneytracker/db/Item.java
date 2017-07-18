@@ -25,6 +25,13 @@ public class Item implements Serializable {
         id = nextId++;
     }
 
+    public Item(String name, int price, String type, long id) {
+        this.name = name;
+        this.type = type;
+        this.id = id;
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
