@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ivanchug.moneytracker.api.Item;
 import com.ivanchug.moneytracker.api.LSApi;
 
 import java.io.IOException;
@@ -79,6 +80,18 @@ public class LsApp extends Application {
     public String getAuthToken() {
         return getSharedPreferences(PREFERENCES_SESSION, MODE_PRIVATE)
                 .getString(KEY_AUTH_TOKEN, "");
+    }
+
+    public void setItemNextId(long nextId) {
+        getSharedPreferences(PREFERENCES_SESSION, MODE_PRIVATE)
+                .edit()
+                .putLong(ITEM_NEXT_ID, Item.getNextId())
+                .apply();
+    }
+
+    public long getItemNextId() {
+        return getSharedPreferences(PREFERENCES_SESSION, MODE_PRIVATE)
+                .getLong(ITEM_NEXT_ID, 0);
     }
 
 

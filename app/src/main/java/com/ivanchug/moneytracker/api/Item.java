@@ -1,5 +1,9 @@
 package com.ivanchug.moneytracker.api;
 
+import android.app.Activity;
+
+import com.ivanchug.moneytracker.LsApp;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,14 +26,15 @@ public class Item extends AbstractItem implements Serializable {
     private Date date;
 
 
-
-    public Item(String name, int price, String type) {
+    public Item(String name, int price, String type, Activity activity) {
+        nextId = ((LsApp) activity.getApplication()).getItemNextId();
         this.name = name;
         this.price = price;
         this.type = type;
         id = nextId++;
         date = new Date();
         category = "без категории";
+        ((LsApp) activity.getApplication()).setItemNextId(nextId);
     }
 
     public Item(String name, int price, String type, long id, Date date) {

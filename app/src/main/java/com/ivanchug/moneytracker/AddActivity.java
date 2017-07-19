@@ -55,7 +55,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent result = new Intent();
-                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type));
+                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this));
                 setResult(RESULT_OK, result);
                 finish();
             }

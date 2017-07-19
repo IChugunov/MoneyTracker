@@ -61,21 +61,25 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     private TreeMap<String, List<Item>> divideByDate(List<Item> items) {
 
         TreeMap<String, List<Item>> result = new TreeMap<>(Collections.reverseOrder());
-        List<Item> itemsForDate = new ArrayList<>();
-        String date = formater.format(items.get(0).getDate());
-        for (int i = 0; i < items.size(); i++) {
-            Item item = items.get(i);
-            String dateToCompare = formater.format(item.getDate());
-            if (dateToCompare.equals(date)) {
-                itemsForDate.add(item);
-            } else if (!dateToCompare.equals(date)) {
-                result.put(date, itemsForDate);
-                itemsForDate.clear();
-                itemsForDate.add(item);
-                date = dateToCompare;
+
+        if (items != null && items.size() > 0) {
+            List<Item> itemsForDate = new ArrayList<>();
+            String date = formater.format(items.get(0).getDate());
+            for (int i = 0; i < items.size(); i++) {
+                Item item = items.get(i);
+                String dateToCompare = formater.format(item.getDate());
+                if (dateToCompare.equals(date)) {
+                    itemsForDate.add(item);
+                } else {
+                    result.put(date, itemsForDate);
+                    itemsForDate = new ArrayList<>();
+                    itemsForDate.add(item);
+                    date = dateToCompare;
+                }
             }
+            result.put(date, itemsForDate);
         }
-        result.put(date, itemsForDate);
+
 
         return result;
     }
@@ -87,17 +91,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     public void add(Item item) {
         String date = formater.format(item.getDate());
-        if (itemsToShow.isEmpty())
-            itemsToShow.add(new HeaderItem(date));
-        if (!((HeaderItem) itemsToShow.get(0)).getDate().equals(date))
-            itemsToShow.add(new HeaderItem(date));
+        if (itemsToShow.isEmpty() || !((HeaderItem) itemsToShow.get(0)).getDate().equals(date)) {
+            itemsToShow.add(0, new HeaderItem(date));
+            notifyItemInserted(0);
+        }
+
         itemsToShow.add(1, item);
         notifyItemInserted(1);
     }
 
     public void addAll(List<Item> items) {
-        if (items == null || items.isEmpty())
-            return;
 
         TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(items);
 
@@ -110,6 +113,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         }
 
         notifyDataSetChanged();
+
     }
 
     public void toggleSelection(int pos) {

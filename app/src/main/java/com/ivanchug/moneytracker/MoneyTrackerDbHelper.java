@@ -88,7 +88,6 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             List<Item> result = new ArrayList<>();
             if (cursor.moveToLast()) {
                 result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
-                Item.setNextId(cursor.getLong(2));
                 while (cursor.moveToPrevious())
                     result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
             }
