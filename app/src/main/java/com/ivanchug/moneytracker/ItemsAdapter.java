@@ -22,7 +22,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private TreeMap<String, List<Item>> itemsDividedByDate;
     private Context context;
     private SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
 
@@ -77,10 +76,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             }
         }
         result.put(date, itemsForDate);
-        List<Item> testList = new ArrayList<>();
-        testList.add(new Item("test", 666, Item.TYPE_EXPENSE));
 
-        result.put("1989.12.01", testList);
         return result;
     }
 
@@ -103,7 +99,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         if (items == null || items.isEmpty())
             return;
 
-        itemsDividedByDate = divideByDate(items);
+        TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(items);
 
         for (String date : itemsDividedByDate.keySet()) {
             HeaderItem header = new HeaderItem(date);
