@@ -30,6 +30,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     private static final String PRICE = "PRICE";
     private static final String NAME = "NAME";
     private static final String DATE = "DATE";
+    private static final String CATEGORIES = "CATEGORIES";
 
     public MoneyTrackerDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -51,11 +52,26 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 + "TOTAL_EXPENSES INTEGER, "
                 + "TOTAL_INCOME INTEGER);");
 
+        db.execSQL("CREATE TABLE CATEGORIES (" +
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "NAME TEXT, " +
+                "TYPE TEXT);");
+
 
         ContentValues values = new ContentValues();
         values.put(TOTAL_EXPENSES, 0);
         values.put(TOTAL_INCOME, 0);
         db.insert(BALANCE, null, values);
+
+        ContentValues categoriesValues = new ContentValues();
+        values.put(NAME, "Без категории");
+        values.put(TYPE, Item.TYPE_EXPENSE);
+        db.insert(CATEGORIES, null, categoriesValues);
+
+        ContentValues categoriesValues1 = new ContentValues();
+        values.put(NAME, "Без категории");
+        values.put(TYPE, Item.TYPE_INCOME);
+        db.insert(CATEGORIES, null, categoriesValues1);
 
 
 
