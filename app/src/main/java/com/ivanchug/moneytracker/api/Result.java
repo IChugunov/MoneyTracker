@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker.db;
+package com.ivanchug.moneytracker.api;
 
 import android.text.TextUtils;
 

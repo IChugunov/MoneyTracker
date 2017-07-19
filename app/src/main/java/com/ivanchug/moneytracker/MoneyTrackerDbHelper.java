@@ -1,10 +1,13 @@
-package com.ivanchug.moneytracker.db;
+package com.ivanchug.moneytracker;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.ivanchug.moneytracker.api.BalanceResult;
+import com.ivanchug.moneytracker.api.Item;
 
 import java.util.ArrayList;
 import java.util.List;

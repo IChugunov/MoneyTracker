@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ivanchug.moneytracker.db.BalanceResult;
-import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
+import com.ivanchug.moneytracker.api.BalanceResult;
 
 
 /**

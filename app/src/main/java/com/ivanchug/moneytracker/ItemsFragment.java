@@ -23,9 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ivanchug.moneytracker.db.Item;
-import com.ivanchug.moneytracker.db.LSApi;
-import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
+import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.api.LSApi;
 
 import java.util.List;
 
