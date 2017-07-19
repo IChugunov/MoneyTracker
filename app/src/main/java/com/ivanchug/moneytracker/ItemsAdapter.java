@@ -8,55 +8,118 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ivanchug.moneytracker.api.AbstractItem;
+import com.ivanchug.moneytracker.api.HeaderItem;
 import com.ivanchug.moneytracker.api.Item;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
-    private List<Item> items = new ArrayList<>();
+    private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
+    private TreeMap<String, List<Item>> itemsDividedByDate;
     private Context context;
+    private SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
+
 
 
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false));
+        if (viewType == AbstractItem.ITEM_TYPE_HEADER)
+            return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.header, parent, false));
+        else
+            return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        final Item item = items.get(position);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-        String date = format.format(item.getDate());
+        int type = getItemViewType(position);
+        if (type == AbstractItem.ITEM_TYPE_HEADER) {
+            final HeaderItem item = (HeaderItem) itemsToShow.get(position);
+            holder.headerName.setText(item.getDate());
+        } else {
+            final Item item = (Item) itemsToShow.get(position);
+            holder.name.setText(item.getName());
+            holder.price.setText(item.getPrice() + context.getString(R.string.rouble));
+            holder.container.setActivated(selectedItems.get(position, false));
+        }
 
-        holder.name.setText(item.getName() + " " + date);
-        holder.price.setText(item.getPrice() + context.getString(R.string.rouble));
-        holder.container.setActivated(selectedItems.get(position, false));
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return itemsToShow.get(position).getItemType();
+    }
+
+    private TreeMap<String, List<Item>> divideByDate(List<Item> items) {
+
+        TreeMap<String, List<Item>> result = new TreeMap<>(Collections.reverseOrder());
+        List<Item> itemsForDate = new ArrayList<>();
+        String date = formater.format(items.get(0).getDate());
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            String dateToCompare = formater.format(item.getDate());
+            if (dateToCompare.equals(date)) {
+                itemsForDate.add(item);
+            } else if (!dateToCompare.equals(date)) {
+                result.put(date, itemsForDate);
+                itemsForDate.clear();
+                itemsForDate.add(item);
+                date = dateToCompare;
+            }
+        }
+        result.put(date, itemsForDate);
+        List<Item> testList = new ArrayList<>();
+        testList.add(new Item("test", 666, Item.TYPE_EXPENSE));
+
+        result.put("1989.12.01", testList);
+        return result;
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return itemsToShow.size();
     }
 
     public void add(Item item) {
-        items.add(0, item);
-        notifyItemInserted(0);
+        String date = formater.format(item.getDate());
+        if (itemsToShow.isEmpty())
+            itemsToShow.add(new HeaderItem(date));
+        if (!((HeaderItem) itemsToShow.get(0)).getDate().equals(date))
+            itemsToShow.add(new HeaderItem(date));
+        itemsToShow.add(1, item);
+        notifyItemInserted(1);
     }
 
     public void addAll(List<Item> items) {
-        this.items.addAll(items);
+        if (items == null || items.isEmpty())
+            return;
+
+        itemsDividedByDate = divideByDate(items);
+
+        for (String date : itemsDividedByDate.keySet()) {
+            HeaderItem header = new HeaderItem(date);
+            itemsToShow.add(header);
+            for (Item item : itemsDividedByDate.get(date)) {
+                itemsToShow.add(item);
+            }
+        }
+
         notifyDataSetChanged();
     }
 
     public void toggleSelection(int pos) {
-        if (pos == -1)
+        if (pos == -1 || itemsToShow.get(pos).getItemType() == AbstractItem.ITEM_TYPE_HEADER)
             return;
+
         if (selectedItems.get(pos, false)) {
             selectedItems.delete(pos);
         } else {
@@ -67,12 +130,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
 
     public void clear() {
-        items.clear();
+        itemsToShow.clear();
     }
 
 
     public Item remove(int position) {
-        final Item item = items.remove(position);
+        final Item item = (Item) itemsToShow.remove(position);
         notifyItemRemoved(position);
         return item;
     }
@@ -94,12 +157,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         private final TextView name;
         private final TextView price;
         private final View container;
+        private final TextView headerName;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
             price = (TextView) itemView.findViewById(R.id.price);
             container = itemView.findViewById(R.id.item_container);
+            headerName = (TextView) itemView.findViewById(R.id.header_name);
         }
     }
 

@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by Иван on 24.06.2017.
  */
 
-public class Item implements Serializable {
+public class Item extends AbstractItem implements Serializable {
     public static final String TYPE_EXPENSE = "expense";
     public static final String TYPE_INCOME = "income";
 
@@ -95,5 +95,10 @@ public class Item implements Serializable {
 
     public static void setNextId(long nextId) {
         Item.nextId = nextId;
+    }
+
+    @Override
+    public int getItemType() {
+        return ITEM_TYPE_ITEM;
     }
 }
