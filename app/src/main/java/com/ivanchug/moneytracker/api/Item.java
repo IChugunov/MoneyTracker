@@ -1,6 +1,7 @@
 package com.ivanchug.moneytracker.api;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Иван on 24.06.2017.
@@ -17,19 +18,28 @@ public class Item implements Serializable {
     private String type;
     private long id;
     private int price;
+    private String category;
+    private Date date;
+
+
 
     public Item(String name, int price, String type) {
         this.name = name;
         this.price = price;
         this.type = type;
         id = nextId++;
+        date = new Date();
+        category = "без категории";
     }
 
-    public Item(String name, int price, String type, long id) {
+    public Item(String name, int price, String type, long id, Date date) {
         this.name = name;
         this.type = type;
         this.id = id;
         this.price = price;
+        category = "без категории";
+        this.date = date;
+
     }
 
     @Override
@@ -69,6 +79,14 @@ public class Item implements Serializable {
 
     public int getPrice() {
         return price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public static long getNextId() {

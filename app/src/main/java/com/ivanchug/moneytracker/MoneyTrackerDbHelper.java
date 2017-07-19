@@ -10,6 +10,7 @@ import com.ivanchug.moneytracker.api.BalanceResult;
 import com.ivanchug.moneytracker.api.Item;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,15 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "moneytracker";
     private static final int DB_VERSION = 1;
+    private static final String BALANCE = "BALANCE";
+    private static final String TOTAL_EXPENSES = "TOTAL_EXPENSES";
+    private static final String TOTAL_INCOME = "TOTAL_INCOME";
+    private static final String ITEMS = "ITEMS";
+    private static final String ID = "ID";
+    private static final String TYPE = "TYPE";
+    private static final String PRICE = "PRICE";
+    private static final String NAME = "NAME";
+    private static final String DATE = "DATE";
 
     public MoneyTrackerDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -32,17 +42,20 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 + "NAME TEXT, "
                 + "PRICE INTEGER, "
                 + "TYPE TEXT, " +
-                "ID INTEGER);");
+                "ID INTEGER, " +
+                "DATE INTEGER, " +
+                "CATEGORY TEXT);");
 
         db.execSQL("CREATE TABLE BALANCE ("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "TOTALEXPENSES INTEGER, "
-                + "TOTALINCOME INTEGER);");
+                + "TOTAL_EXPENSES INTEGER, "
+                + "TOTAL_INCOME INTEGER);");
+
 
         ContentValues values = new ContentValues();
-        values.put("TOTALEXPENSES", 0);
-        values.put("TOTALINCOME", 0);
-        db.insert("BALANCE", null, values);
+        values.put(TOTAL_EXPENSES, 0);
+        values.put(TOTAL_INCOME, 0);
+        db.insert(BALANCE, null, values);
 
 
 
@@ -55,13 +68,13 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public List<Item> getItems(SQLiteDatabase db, String type) {
 
-        try (Cursor cursor = db.query("ITEMS", new String[]{"NAME", "PRICE", "ID"}, "TYPE = ?", new String[]{type}, null, null, null)) {
+        try (Cursor cursor = db.query(ITEMS, new String[]{NAME, PRICE, ID, DATE}, "TYPE = ?", new String[]{type}, null, null, null)) {
             List<Item> result = new ArrayList<>();
             if (cursor.moveToLast()) {
-                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2)));
+                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
                 Item.setNextId(cursor.getLong(2));
                 while (cursor.moveToPrevious())
-                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2)));
+                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
             }
 
             return result;
@@ -77,11 +90,12 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     public Item addItem(SQLiteDatabase db, Item item) {
         try {
             ContentValues values = new ContentValues();
-            values.put("NAME", item.getName());
-            values.put("PRICE", item.getPrice());
-            values.put("TYPE", item.getType());
-            values.put("ID", item.getId());
-            db.insert("ITEMS", null, values);
+            values.put(NAME, item.getName());
+            values.put(PRICE, item.getPrice());
+            values.put(TYPE, item.getType());
+            values.put(ID, item.getId());
+            values.put(DATE, item.getDate().getTime());
+            db.insert(ITEMS, null, values);
             addToBalance(db, item.getType(), item.getPrice());
             return item;
         } catch (Exception e) {
@@ -94,7 +108,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public Item removeItem(SQLiteDatabase db, Item item) {
         try {
-            db.delete("ITEMS", "NAME = ? AND PRICE = ? AND TYPE = ? AND ID = ?", new String[]{item.getName(), Integer.toString(item.getPrice()), item.getType(), Long.toString(item.getId())});
+            db.delete(ITEMS, "NAME = ? AND PRICE = ? AND TYPE = ? AND ID = ?", new String[]{item.getName(), Integer.toString(item.getPrice()), item.getType(), Long.toString(item.getId())});
             removeFromBalance(db, item.getType(), item.getPrice());
             return item;
         } catch (Exception e) {
@@ -106,7 +120,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     }
 
     public BalanceResult getBalance(SQLiteDatabase db) {
-        try (Cursor cursor = db.query("BALANCE", new String[]{"TOTALEXPENSES", "TOTALINCOME"}, null, null, null, null, null)) {
+        try (Cursor cursor = db.query(BALANCE, new String[]{TOTAL_EXPENSES, TOTAL_INCOME}, null, null, null, null, null)) {
             long totalExpenses = 0;
             long totalIncome = 0;
             if (cursor.moveToFirst()) {
@@ -123,41 +137,41 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     }
 
     private void addToBalance(SQLiteDatabase db, String type, int price) {
-        try (Cursor cursor = db.query("BALANCE", new String[]{"TOTALEXPENSES", "TOTALINCOME"}, null, null, null, null, null)) {
+        try (Cursor cursor = db.query(BALANCE, new String[]{TOTAL_EXPENSES, TOTAL_INCOME}, null, null, null, null, null)) {
             String columnToUpdate = null;
-            int colomnId = 0;
+            int columnId = 0;
             if (type.equals(Item.TYPE_EXPENSE))
-                columnToUpdate = "TOTALEXPENSES";
+                columnToUpdate = TOTAL_EXPENSES;
             else {
-                columnToUpdate = "TOTALINCOME";
-                colomnId = 1;
+                columnToUpdate = TOTAL_INCOME;
+                columnId = 1;
             }
             cursor.moveToFirst();
 
-            int resultAmount = cursor.getInt(colomnId) + price;
+            int resultAmount = cursor.getInt(columnId) + price;
             ContentValues values = new ContentValues();
             values.put(columnToUpdate, resultAmount);
-            db.update("BALANCE", values, null, null);
+            db.update(BALANCE, values, null, null);
 
         }
     }
 
     private void removeFromBalance(SQLiteDatabase db, String type, int price) {
-        try (Cursor cursor = db.query("BALANCE", new String[]{"TOTALEXPENSES", "TOTALINCOME"}, null, null, null, null, null)) {
+        try (Cursor cursor = db.query(BALANCE, new String[]{TOTAL_EXPENSES, TOTAL_INCOME}, null, null, null, null, null)) {
             String columnToUpdate = null;
-            int colomnId = 0;
+            int columnId = 0;
             if (type.equals(Item.TYPE_EXPENSE))
-                columnToUpdate = "TOTALEXPENSES";
+                columnToUpdate = TOTAL_EXPENSES;
             else {
-                columnToUpdate = "TOTALINCOME";
-                colomnId = 1;
+                columnToUpdate = TOTAL_INCOME;
+                columnId = 1;
             }
             cursor.moveToFirst();
 
-            int resultAmount = cursor.getInt(colomnId) - price;
+            int resultAmount = cursor.getInt(columnId) - price;
             ContentValues values = new ContentValues();
             values.put(columnToUpdate, resultAmount);
-            db.update("BALANCE", values, null, null);
+            db.update(BALANCE, values, null, null);
 
         }
     }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ivanchug.moneytracker.api.Item;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         final Item item = items.get(position);
-        holder.name.setText(item.getName());
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        String date = format.format(item.getDate());
+
+        holder.name.setText(item.getName() + " " + date);
         holder.price.setText(item.getPrice() + context.getString(R.string.rouble));
         holder.container.setActivated(selectedItems.get(position, false));
     }
