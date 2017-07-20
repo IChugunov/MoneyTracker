@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ivanchug.moneytracker.api.BalanceResult;
 import com.ivanchug.moneytracker.api.Item;
 
 import java.util.ArrayList;
@@ -23,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabs;
     private ViewPager pages;
     private ArrayList<Fragment> fragments = new ArrayList<>();
+
+
+    private int totalExpenses = 0;
+    private int totalIncome = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         }
         for (Fragment fragment : fragments) {
             if (fragment instanceof BalanceFragment) {
-
+                ((BalanceFragment) fragment).updateData();
             } else {
                 ((ItemsFragment) fragment).setMenuItemSelected(menuItemSelected);
                 ((ItemsFragment) fragment).loadItems(menuItemSelected);
@@ -89,6 +94,26 @@ public class MainActivity extends AppCompatActivity {
         tabs.setupWithViewPager(pages);
     }
 
+    public int getTotals(String type) {
+        if (type.equals(Item.TYPE_EXPENSE))
+            return totalExpenses;
+        else
+            return totalIncome;
+    }
+
+    public void setTotals(int totalsAmount, String type) {
+        if (type.equals(Item.TYPE_EXPENSE))
+            totalExpenses = totalsAmount;
+        else
+            totalIncome = totalsAmount;
+    }
+
+    public BalanceResult getBalance() {
+        return new BalanceResult(totalExpenses, totalIncome);
+    }
+
+
+
     private class MainPagerAdapter extends FragmentPagerAdapter {
         private final String[] titles;
         private final String[] types = {Item.TYPE_EXPENSE, Item.TYPE_INCOME};
@@ -117,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
@@ -126,5 +152,7 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return titles.length;
         }
+
+
     }
 }

@@ -1,6 +1,5 @@
 package com.ivanchug.moneytracker;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -23,15 +22,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private Context context;
+    private MainActivity context;
     private SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
 
 
-
+    public ItemsAdapter(MainActivity context) {
+        this.context = context;
+    }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
         if (viewType == AbstractItem.ITEM_TYPE_HEADER)
             return new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.header, parent, false));
         else
@@ -99,11 +99,25 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         itemsToShow.add(1, item);
         notifyItemInserted(1);
+        String type = item.getType();
+        int newTotal = context.getTotals(type) + item.getPrice();
+        context.setTotals(newTotal, type);
     }
 
     public void addAll(List<Item> items, int menuItemSelected) {
 
-        TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(sortByTimeLapse(items, menuItemSelected));
+        List<Item> itemsSortedByTimeLapse = sortByTimeLapse(items, menuItemSelected);
+
+        int totalAmount = 0;
+
+        if (itemsSortedByTimeLapse != null && !itemsSortedByTimeLapse.isEmpty()) {
+            for (Item item : itemsSortedByTimeLapse) {
+                totalAmount += item.getPrice();
+            }
+            context.setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
+        }
+
+        TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(itemsSortedByTimeLapse);
 
         for (String date : itemsDividedByDate.keySet()) {
             HeaderItem header = new HeaderItem(date);
@@ -138,7 +152,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     public Item remove(int position) {
         final Item item = (Item) itemsToShow.remove(position);
+        String type = item.getType();
         notifyItemRemoved(position);
+        int newTotal = context.getTotals(type) - item.getPrice();
+        context.setTotals(newTotal, type);
         return item;
     }
 
@@ -156,7 +173,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     }
 
     private List<Item> sortByTimeLapse(List<Item> items, int menuItemSelected) {
-        if (menuItemSelected == 3)
+        if (menuItemSelected == 3 || items == null || items.isEmpty())
             return items;
         List<Item> result = new ArrayList<>();
         SimpleDateFormat format = null;
@@ -170,8 +187,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         for (Item item : items) {
             if (formattedDate.equals(format.format(item.getDate())))
                 result.add(item);
-            //else
-            //    break;
+            else
+                break;
         }
 
         return result;

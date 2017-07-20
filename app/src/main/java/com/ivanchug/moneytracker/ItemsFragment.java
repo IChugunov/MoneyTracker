@@ -41,14 +41,13 @@ public class ItemsFragment extends Fragment {
     private static final int LOADER_REMOVE = 2;
 
     public static final String ARG_TYPE = "type";
-    private ItemsAdapter adapter = new ItemsAdapter();
+    private ItemsAdapter adapter;
 
     private String type;
     private LSApi api;
     private View add;
-
-
     private int menuItemSelected = 3;
+
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
@@ -115,6 +114,7 @@ public class ItemsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView items = (RecyclerView) view.findViewById(R.id.items);
+        adapter = new ItemsAdapter((MainActivity) getActivity());
         items.setAdapter(adapter);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -177,6 +177,13 @@ public class ItemsFragment extends Fragment {
         });
 
         loadItems(menuItemSelected);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed() && adapter.getItemCount() == 0)
+            loadItems(menuItemSelected);
     }
 
     private void toggleSelection(MotionEvent e, RecyclerView items) {

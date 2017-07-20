@@ -32,7 +32,7 @@
 
             <EditText
                 android:id="@+id/add_amount"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/amount_hint"
                 android:textSize="@dimen/text_size"
