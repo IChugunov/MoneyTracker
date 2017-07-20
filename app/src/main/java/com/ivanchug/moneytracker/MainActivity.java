@@ -12,15 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.ivanchug.moneytracker.api.Item;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabs;
     private ViewPager pages;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,17 +43,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemSelected = 0;
         switch (item.getItemId()) {
             case R.id.time_lapse_month:
-                Toast.makeText(this, "Месяц", Toast.LENGTH_SHORT).show();
+                menuItemSelected = 1;
                 break;
             case R.id.time_lapse_year:
-                Toast.makeText(this, "год", Toast.LENGTH_SHORT).show();
+                menuItemSelected = 2;
                 break;
             case R.id.time_lapse_all:
-                Toast.makeText(this, "все", Toast.LENGTH_SHORT).show();
+                menuItemSelected = 3;
                 break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof BalanceFragment) {
+
+            } else {
+                ((ItemsFragment) fragment).setMenuItemSelected(menuItemSelected);
+                ((ItemsFragment) fragment).loadItems(menuItemSelected);
+            }
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -86,13 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == getCount() - 1)
-                return new BalanceFragment();
+            if (position == getCount() - 1) {
+                BalanceFragment balanceFragment = new BalanceFragment();
+                fragments.add(balanceFragment);
+                return balanceFragment;
+            }
+
 
             Bundle args = new Bundle();
             final ItemsFragment itemsFragment = new ItemsFragment();
             args.putString(ItemsFragment.ARG_TYPE, types[position]);
             itemsFragment.setArguments(args);
+            fragments.add(itemsFragment);
             return itemsFragment;
         }
 

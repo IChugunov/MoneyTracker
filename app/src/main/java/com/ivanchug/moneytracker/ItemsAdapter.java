@@ -15,6 +15,7 @@ import com.ivanchug.moneytracker.api.Item;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -100,9 +101,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyItemInserted(1);
     }
 
-    public void addAll(List<Item> items) {
+    public void addAll(List<Item> items, int menuItemSelected) {
 
-        TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(items);
+        TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(sortByTimeLapse(items, menuItemSelected));
 
         for (String date : itemsDividedByDate.keySet()) {
             HeaderItem header = new HeaderItem(date);
@@ -115,6 +116,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyDataSetChanged();
 
     }
+
 
     public void toggleSelection(int pos) {
         if (pos == -1 || itemsToShow.get(pos).getItemType() == AbstractItem.ITEM_TYPE_HEADER)
@@ -151,6 +153,28 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             items.add(selectedItems.keyAt(i));
         }
         return items;
+    }
+
+    private List<Item> sortByTimeLapse(List<Item> items, int menuItemSelected) {
+        if (menuItemSelected == 3)
+            return items;
+        List<Item> result = new ArrayList<>();
+        SimpleDateFormat format = null;
+        Date currentDate = new Date();
+        if (menuItemSelected == 1)
+            format = new SimpleDateFormat("MM.yyyy");
+        else
+            format = new SimpleDateFormat("yyyy");
+        String formattedDate = format.format(currentDate);
+
+        for (Item item : items) {
+            if (formattedDate.equals(format.format(item.getDate())))
+                result.add(item);
+            //else
+            //    break;
+        }
+
+        return result;
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {

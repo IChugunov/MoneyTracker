@@ -46,6 +46,9 @@ public class ItemsFragment extends Fragment {
     private String type;
     private LSApi api;
     private View add;
+
+
+    private int menuItemSelected = 3;
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
@@ -98,6 +101,7 @@ public class ItemsFragment extends Fragment {
 
         }
     };
+
 
 
 
@@ -167,12 +171,12 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems();
+                loadItems(menuItemSelected);
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems();
+        loadItems(menuItemSelected);
     }
 
     private void toggleSelection(MotionEvent e, RecyclerView items) {
@@ -188,15 +192,8 @@ public class ItemsFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (adapter.getItemCount() == 0) {
-            loadItems();
-        }
-    }
 
-    private void loadItems() {
+    void loadItems(final int menuItemSelected) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
         if (type.equals(Item.TYPE_INCOME))
             loaderId = LOADER_ITEMS_INCOME;
@@ -225,7 +222,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(data);
+                    adapter.addAll(data, menuItemSelected);
                 }
             }
 
@@ -304,5 +301,7 @@ public class ItemsFragment extends Fragment {
         }).forceLoad();
     }
 
-
+    public void setMenuItemSelected(int menuItemSelected) {
+        this.menuItemSelected = menuItemSelected;
+    }
 }
