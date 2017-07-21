@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.api.Item;
-import com.ivanchug.moneytracker.api.LSApi;
 
 import java.util.List;
 
@@ -44,7 +43,6 @@ public class ItemsFragment extends Fragment {
     private ItemsAdapter adapter;
 
     private String type;
-    private LSApi api;
     private View add;
     private int menuItemSelected = 3;
 
@@ -122,7 +120,6 @@ public class ItemsFragment extends Fragment {
         items.setItemAnimator(itemAnimator);
 
         type = getArguments().getString(ARG_TYPE);
-        api = ((LsApp) getActivity().getApplication()).api();
         add = view.findViewById(R.id.add_flbutton);
 
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
@@ -179,12 +176,6 @@ public class ItemsFragment extends Fragment {
         loadItems(menuItemSelected);
     }
 
-   /* @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isResumed() && adapter.getItemCount() == 0)
-            loadItems(menuItemSelected);
-    }*/
 
     private void toggleSelection(MotionEvent e, RecyclerView items) {
         adapter.toggleSelection(items.getChildLayoutPosition(items.findChildViewUnder(e.getX(), e.getY())));
