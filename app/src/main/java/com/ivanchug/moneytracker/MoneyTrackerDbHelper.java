@@ -20,9 +20,6 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "moneytracker";
     private static final int DB_VERSION = 1;
-    private static final String BALANCE = "BALANCE";
-    private static final String TOTAL_EXPENSES = "TOTAL_EXPENSES";
-    private static final String TOTAL_INCOME = "TOTAL_INCOME";
     private static final String ITEMS = "ITEMS";
     private static final String ID = "ID";
     private static final String TYPE = "TYPE";
