@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="40dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.ivanchug.moneytracker.BalanceFragment">
+    tools:context="com.ivanchug.moneytracker.BalanceActivity">
 
     <TextView
         android:id="@+id/balance_amount"

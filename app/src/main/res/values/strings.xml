@@ -19,9 +19,9 @@
     <string name="time_lapse_month">Месяц</string>
     <string name="time_lapse_year">Год</string>
     <string name="time_lapse_all">Все</string>
+    <string name="action_show_balance">Баланс за выбранный период</string>
     <array name="main_pager_titles">
         <item>@string/expenses</item>
         <item>@string/incomes</item>
-        <item>@string/balance</item>
     </array>
 </resources>

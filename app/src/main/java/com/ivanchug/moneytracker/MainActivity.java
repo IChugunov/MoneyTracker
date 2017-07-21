@@ -3,7 +3,6 @@ package com.ivanchug.moneytracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -26,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pages;
 
     private ArrayList<ItemsFragment> itemsFragments = new ArrayList<>();
-    private BalanceFragment balanceFragment;
-
 
 
     private int totalExpenses = 0;
@@ -73,21 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment.loadItems(menuItemSelected);
 
             }
-            if (balanceFragment != null) {
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
-                        balanceFragment.updateData();
-                    }
-                });
-            }
         }
 
 
@@ -146,12 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == getCount() - 1) {
-                BalanceFragment balanceFragment = new BalanceFragment();
-                MainActivity.this.balanceFragment = balanceFragment;
-                return balanceFragment;
-            }
-
 
             Bundle args = new Bundle();
             final ItemsFragment itemsFragment = new ItemsFragment();

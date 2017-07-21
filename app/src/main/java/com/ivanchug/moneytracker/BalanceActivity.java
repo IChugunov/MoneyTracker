@@ -19,7 +19,7 @@ import com.ivanchug.moneytracker.api.BalanceResult;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BalanceFragment extends Fragment {
+public class BalanceActivity extends Fragment {
 
     private TextView balance;
     private TextView expense;
@@ -27,7 +27,7 @@ public class BalanceFragment extends Fragment {
     private DiagramView diagram;
 
 
-    public BalanceFragment() {
+    public BalanceActivity() {
         // Required empty public constructor
     }
 
@@ -37,7 +37,7 @@ public class BalanceFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_balance, container, false);
+        return inflater.inflate(R.layout.activity_balance, container, false);
     }
 
     @Override
