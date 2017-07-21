@@ -23,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabs;
     private ViewPager pages;
-
     private ArrayList<ItemsFragment> itemsFragments = new ArrayList<>();
+    private int menuItemSelected = 3;
+
 
 
     private int totalExpenses = 0;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         tabs = (TabLayout) findViewById(R.id.tabs);
         pages = (ViewPager) findViewById(R.id.pages);
 
+        if (savedInstanceState != null)
+            menuItemSelected = savedInstanceState.getInt("menuItemSelected");
     }
 
     @Override
@@ -46,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("menuItemSelected", menuItemSelected);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -56,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {
 
-            int menuItemSelected = 0;
             switch (itemId) {
                 case R.id.time_lapse_month:
                     menuItemSelected = 1;
@@ -70,10 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
             for (ItemsFragment fragment : itemsFragments) {
-
-                fragment.setMenuItemSelected(menuItemSelected);
                 fragment.loadItems(menuItemSelected);
-
             }
 
         }
@@ -115,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
             totalIncome = totalsAmount;
     }
 
-
+    public int getMenuItemSelected() {
+        return menuItemSelected;
+    }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {
         private final String[] titles;

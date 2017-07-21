@@ -44,7 +44,7 @@ public class ItemsFragment extends Fragment {
 
     private String type;
     private View add;
-    private int menuItemSelected = 3;
+
 
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
@@ -168,12 +168,12 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems(menuItemSelected);
+                loadItems(((MainActivity) getActivity()).getMenuItemSelected());
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems(menuItemSelected);
+        loadItems(((MainActivity) getActivity()).getMenuItemSelected());
     }
 
 
@@ -299,7 +299,5 @@ public class ItemsFragment extends Fragment {
         }).forceLoad();
     }
 
-    public void setMenuItemSelected(int menuItemSelected) {
-        this.menuItemSelected = menuItemSelected;
-    }
+
 }
