@@ -7,7 +7,7 @@
     <item
         android:id="@+id/action_choose_time_lapse"
         android:title="@string/action_choose_time_lapse"
-        android:icon="@drawable/ic_timelapse_black_48dp"
+        android:icon="@drawable/ic_timelapse_white_48dp"
         android:orderInCategory="1"
         app:showAsAction="ifRoom">
         <menu>

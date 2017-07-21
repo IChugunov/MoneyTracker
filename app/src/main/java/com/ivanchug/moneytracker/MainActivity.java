@@ -48,29 +48,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int menuItemSelected = 0;
-        switch (item.getItemId()) {
-            case R.id.time_lapse_month:
-                menuItemSelected = 1;
-                break;
-            case R.id.time_lapse_year:
-                menuItemSelected = 2;
-                break;
-            case R.id.time_lapse_all:
-                menuItemSelected = 3;
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        for (Fragment fragment : fragments) {
-            if (fragment instanceof BalanceFragment) {
-                ((BalanceFragment) fragment).updateData();
-            } else {
-                ((ItemsFragment) fragment).setMenuItemSelected(menuItemSelected);
-                ((ItemsFragment) fragment).loadItems(menuItemSelected);
-            }
+        if (item.getItemId() != R.id.action_choose_time_lapse) {
+            int menuItemSelected = 0;
+            switch (item.getItemId()) {
+                case R.id.time_lapse_month:
+                    menuItemSelected = 1;
+                    break;
+                case R.id.time_lapse_year:
+                    menuItemSelected = 2;
+                    break;
+                case R.id.time_lapse_all:
+                    menuItemSelected = 3;
+                    break;
 
+            }
+            for (Fragment fragment : fragments) {
+                if (fragment instanceof BalanceFragment) {
+                    ((BalanceFragment) fragment).updateData();
+                } else {
+                    ((ItemsFragment) fragment).setMenuItemSelected(menuItemSelected);
+                    ((ItemsFragment) fragment).loadItems(menuItemSelected);
+                }
+
+            }
         }
+
 
         return super.onOptionsItemSelected(item);
     }

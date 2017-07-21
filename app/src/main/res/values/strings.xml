@@ -13,7 +13,7 @@
     <string name="confirm_remove">Удалить выделенные элементы?</string>
     <string name="items_selected">выбрано</string>
     <string name="auth_text">Ваш незаменимый помощник \n в управлении бюджетом</string>
-    <string name="your_balance">ваш баланс</string>
+    <string name="your_balance">ваш баланс\n за выбранный период</string>
     <string name="price">%1$d Р</string>
     <string name="action_choose_time_lapse">Выберите период</string>
     <string name="time_lapse_month">Месяц</string>

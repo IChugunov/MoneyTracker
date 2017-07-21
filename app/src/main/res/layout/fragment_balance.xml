@@ -26,6 +26,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:textColor="@color/colorComment"
+        android:gravity="center"
         android:textSize="@dimen/text_large" />
 
     <TextView
