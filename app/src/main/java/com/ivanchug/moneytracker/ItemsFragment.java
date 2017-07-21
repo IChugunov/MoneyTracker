@@ -23,8 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ivanchug.moneytracker.api.Item;
-import com.ivanchug.moneytracker.api.LSApi;
+import com.ivanchug.moneytracker.items.Item;
 
 import java.util.List;
 
@@ -44,9 +43,8 @@ public class ItemsFragment extends Fragment {
     private ItemsAdapter adapter;
 
     private String type;
-    private LSApi api;
     private View add;
-    private int menuItemSelected = 3;
+
 
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
@@ -122,7 +120,6 @@ public class ItemsFragment extends Fragment {
         items.setItemAnimator(itemAnimator);
 
         type = getArguments().getString(ARG_TYPE);
-        api = ((LsApp) getActivity().getApplication()).api();
         add = view.findViewById(R.id.add_flbutton);
 
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
@@ -171,20 +168,14 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems(menuItemSelected);
+                loadItems(((MainActivity) getActivity()).getMenuItemSelected());
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems(menuItemSelected);
+        loadItems(((MainActivity) getActivity()).getMenuItemSelected());
     }
 
-   /* @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isResumed() && adapter.getItemCount() == 0)
-            loadItems(menuItemSelected);
-    }*/
 
     private void toggleSelection(MotionEvent e, RecyclerView items) {
         adapter.toggleSelection(items.getChildLayoutPosition(items.findChildViewUnder(e.getX(), e.getY())));
@@ -308,7 +299,5 @@ public class ItemsFragment extends Fragment {
         }).forceLoad();
     }
 
-    public void setMenuItemSelected(int menuItemSelected) {
-        this.menuItemSelected = menuItemSelected;
-    }
+
 }
