@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.ivanchug.moneytracker.api.BalanceResult;
+import com.ivanchug.moneytracker.items.BalanceResult;
 
 
 public class BalanceActivity extends AppCompatActivity {

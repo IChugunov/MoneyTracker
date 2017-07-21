@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.items.Item;
 
 public class AddActivity extends AppCompatActivity {
 

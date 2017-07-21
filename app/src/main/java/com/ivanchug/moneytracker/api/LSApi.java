@@ -1,5 +1,8 @@
 package com.ivanchug.moneytracker.api;
 
+import com.ivanchug.moneytracker.items.BalanceResult;
+import com.ivanchug.moneytracker.items.Item;
+
 import java.util.List;
 
 import retrofit2.Call;

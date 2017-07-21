@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker.api;
+package com.ivanchug.moneytracker.items;
 
 import android.app.Activity;
 

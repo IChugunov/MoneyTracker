@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker.api;
+package com.ivanchug.moneytracker.items;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Иван on 08.07.2017.
  */
 
-public class BalanceResult extends Result implements Serializable {
+public class BalanceResult implements Serializable {
     public long totalExpenses;
     public long totalIncome;
 

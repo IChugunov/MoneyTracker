@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ivanchug.moneytracker.api.AbstractItem;
-import com.ivanchug.moneytracker.api.HeaderItem;
-import com.ivanchug.moneytracker.api.Item;
+import com.ivanchug.moneytracker.items.AbstractItem;
+import com.ivanchug.moneytracker.items.HeaderItem;
+import com.ivanchug.moneytracker.items.Item;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
