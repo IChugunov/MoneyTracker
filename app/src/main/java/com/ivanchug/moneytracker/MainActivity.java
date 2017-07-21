@@ -49,10 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() != R.id.action_choose_time_lapse) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_show_balance) {
+            final Intent intent = new Intent(this, BalanceActivity.class);
+            intent.putExtra(BalanceActivity.BALANCE_RESULT, new BalanceResult(totalExpenses, totalIncome));
+            startActivity(intent);
+        } else if (itemId != R.id.action_choose_time_lapse) {
 
             int menuItemSelected = 0;
-            switch (item.getItemId()) {
+            switch (itemId) {
                 case R.id.time_lapse_month:
                     menuItemSelected = 1;
                     break;
@@ -108,11 +113,6 @@ public class MainActivity extends AppCompatActivity {
             totalExpenses = totalsAmount;
         else
             totalIncome = totalsAmount;
-    }
-
-
-    public BalanceResult getBalance() {
-        return new BalanceResult(totalExpenses, totalIncome);
     }
 
 
