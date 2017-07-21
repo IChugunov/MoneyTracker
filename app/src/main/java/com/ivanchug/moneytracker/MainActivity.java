@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabs;
     private ViewPager pages;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
+
+    private ArrayList<ItemsFragment> itemsFragments = new ArrayList<>();
 
 
     private int totalExpenses = 0;
@@ -48,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() != R.id.action_choose_time_lapse) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_show_balance) {
+            final Intent intent = new Intent(this, BalanceActivity.class);
+            intent.putExtra(BalanceActivity.BALANCE_RESULT, new BalanceResult(totalExpenses, totalIncome));
+            startActivity(intent);
+        } else if (itemId != R.id.action_choose_time_lapse) {
+
             int menuItemSelected = 0;
-            switch (item.getItemId()) {
+            switch (itemId) {
                 case R.id.time_lapse_month:
                     menuItemSelected = 1;
                     break;
@@ -62,15 +69,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
             }
-            for (Fragment fragment : fragments) {
-                if (fragment instanceof BalanceFragment) {
-                    ((BalanceFragment) fragment).updateData();
-                } else {
-                    ((ItemsFragment) fragment).setMenuItemSelected(menuItemSelected);
-                    ((ItemsFragment) fragment).loadItems(menuItemSelected);
-                }
+            for (ItemsFragment fragment : itemsFragments) {
+
+                fragment.setMenuItemSelected(menuItemSelected);
+                fragment.loadItems(menuItemSelected);
 
             }
+
         }
 
 
@@ -110,10 +115,6 @@ public class MainActivity extends AppCompatActivity {
             totalIncome = totalsAmount;
     }
 
-    public BalanceResult getBalance() {
-        return new BalanceResult(totalExpenses, totalIncome);
-    }
-
 
 
     private class MainPagerAdapter extends FragmentPagerAdapter {
@@ -128,18 +129,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == getCount() - 1) {
-                BalanceFragment balanceFragment = new BalanceFragment();
-                fragments.add(balanceFragment);
-                return balanceFragment;
-            }
-
 
             Bundle args = new Bundle();
             final ItemsFragment itemsFragment = new ItemsFragment();
             args.putString(ItemsFragment.ARG_TYPE, types[position]);
             itemsFragment.setArguments(args);
-            fragments.add(itemsFragment);
+            itemsFragments.add(itemsFragment);
             return itemsFragment;
         }
 
