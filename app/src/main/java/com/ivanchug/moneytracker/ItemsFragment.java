@@ -41,11 +41,13 @@ public class ItemsFragment extends Fragment {
     private static final int LOADER_REMOVE = 2;
 
     public static final String ARG_TYPE = "type";
-    private ItemsAdapter adapter = new ItemsAdapter();
+    private ItemsAdapter adapter;
 
     private String type;
     private LSApi api;
     private View add;
+    private int menuItemSelected = 3;
+
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
@@ -101,6 +103,7 @@ public class ItemsFragment extends Fragment {
 
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,6 +114,7 @@ public class ItemsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView items = (RecyclerView) view.findViewById(R.id.items);
+        adapter = new ItemsAdapter((MainActivity) getActivity());
         items.setAdapter(adapter);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -167,12 +171,19 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems();
+                loadItems(menuItemSelected);
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems();
+        loadItems(menuItemSelected);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed() && adapter.getItemCount() == 0)
+            loadItems(menuItemSelected);
     }
 
     private void toggleSelection(MotionEvent e, RecyclerView items) {
@@ -188,15 +199,8 @@ public class ItemsFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (adapter.getItemCount() == 0) {
-            loadItems();
-        }
-    }
 
-    private void loadItems() {
+    void loadItems(final int menuItemSelected) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
         if (type.equals(Item.TYPE_INCOME))
             loaderId = LOADER_ITEMS_INCOME;
@@ -225,7 +229,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(data);
+                    adapter.addAll(data, menuItemSelected);
                 }
             }
 
@@ -304,5 +308,7 @@ public class ItemsFragment extends Fragment {
         }).forceLoad();
     }
 
-
+    public void setMenuItemSelected(int menuItemSelected) {
+        this.menuItemSelected = menuItemSelected;
+    }
 }

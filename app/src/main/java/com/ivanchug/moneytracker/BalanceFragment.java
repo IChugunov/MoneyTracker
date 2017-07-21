@@ -50,7 +50,7 @@ public class BalanceFragment extends Fragment {
         diagram = (DiagramView) view.findViewById(R.id.diagram);
     }
 
-    private void updateData() {
+    public void updateData() {
         getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<BalanceResult>() {
             @Override
             public Loader<BalanceResult> onCreateLoader(int id, Bundle args) {
@@ -58,8 +58,7 @@ public class BalanceFragment extends Fragment {
                     @Override
                     public BalanceResult loadInBackground() {
                         try {
-                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
-                            return dbHelper.getBalance(dbHelper.getReadableDatabase());
+                            return ((MainActivity) getActivity()).getBalance();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

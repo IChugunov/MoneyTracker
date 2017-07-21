@@ -1,12 +1,17 @@
 package com.ivanchug.moneytracker.api;
 
+import android.app.Activity;
+
+import com.ivanchug.moneytracker.LsApp;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Иван on 24.06.2017.
  */
 
-public class Item implements Serializable {
+public class Item extends AbstractItem implements Serializable {
     public static final String TYPE_EXPENSE = "expense";
     public static final String TYPE_INCOME = "income";
 
@@ -17,19 +22,29 @@ public class Item implements Serializable {
     private String type;
     private long id;
     private int price;
+    private String category;
+    private Date date;
 
-    public Item(String name, int price, String type) {
+
+    public Item(String name, int price, String type, Activity activity) {
+        nextId = ((LsApp) activity.getApplication()).getItemNextId();
         this.name = name;
         this.price = price;
         this.type = type;
         id = nextId++;
+        date = new Date();
+        category = "без категории";
+        ((LsApp) activity.getApplication()).setItemNextId(nextId);
     }
 
-    public Item(String name, int price, String type, long id) {
+    public Item(String name, int price, String type, long id, Date date) {
         this.name = name;
         this.type = type;
         this.id = id;
         this.price = price;
+        category = "без категории";
+        this.date = date;
+
     }
 
     @Override
@@ -71,11 +86,24 @@ public class Item implements Serializable {
         return price;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     public static long getNextId() {
         return nextId;
     }
 
     public static void setNextId(long nextId) {
         Item.nextId = nextId;
+    }
+
+    @Override
+    public int getItemType() {
+        return ITEM_TYPE_ITEM;
     }
 }

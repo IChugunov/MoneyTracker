@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_choose_time_lapse"
+        android:title="@string/action_choose_time_lapse"
+        android:icon="@drawable/ic_timelapse_white_48dp"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/time_lapse_month"
+                android:title="@string/time_lapse_month"
+                android:orderInCategory="10"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/time_lapse_year"
+                android:title="@string/time_lapse_year"
+                android:orderInCategory="20"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/time_lapse_all"
+                android:title="@string/time_lapse_all"
+                android:orderInCategory="30"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+</menu>
