@@ -2,7 +2,6 @@ package com.ivanchug.moneytracker;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -32,6 +31,8 @@ public class LsApp extends Application {
     private static final String PREFERENCES_SESSION = "session";
     private static final String KEY_AUTH_TOKEN = "auth-token";
     private static final String ITEM_NEXT_ID = "nextId";
+
+    private boolean isLoggedIn;
 
     public LSApi api() {
         return api;
@@ -96,9 +97,12 @@ public class LsApp extends Application {
 
 
     public boolean isLoggedIn() {
-        return !TextUtils.isEmpty(getAuthToken());
+        return isLoggedIn;
     }
 
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 
     private class AuthIntercepter implements Interceptor {
         @Override
