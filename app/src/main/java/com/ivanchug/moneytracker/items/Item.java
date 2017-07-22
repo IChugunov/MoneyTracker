@@ -106,4 +106,6 @@ public class Item extends AbstractItem implements Serializable {
     public int getItemType() {
         return ITEM_TYPE_ITEM;
     }
+
+
 }

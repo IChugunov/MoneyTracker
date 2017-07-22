@@ -19,14 +19,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     private List<String> categories = new ArrayList<>();
     private SparseBooleanArray selectedCategories = new SparseBooleanArray();
 
-    public CategoriesAdapter() {
-        categories.add("nibibi");
-        categories.add("nibibi");
-        categories.add("nibibi");
-        categories.add("nibibi");
-        categories.add("nibibi");
-        categories.add("nibibi");
-    }
 
     @Override
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

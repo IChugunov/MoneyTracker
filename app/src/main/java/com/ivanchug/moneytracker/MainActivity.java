@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.BalanceResult;
 import com.ivanchug.moneytracker.items.Item;
 
@@ -65,10 +66,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else if (itemId == R.id.action_categories) {
             int selectedTadPosition = tabs.getSelectedTabPosition();
+
             String itemFragmentType = Item.TYPE_EXPENSE;
             if (selectedTadPosition == 1)
                 itemFragmentType = Item.TYPE_INCOME;
+
             final Intent intent = new Intent(this, CategoriesActivity.class);
+            intent.putExtra(CategoriesActivity.ITEMS_TO_SHOW, new ArrayList<AbstractItem>(itemsFragments.get(selectedTadPosition).getAdapter().getItemsToShow()));
             intent.putExtra(CategoriesActivity.ARG_TYPE, itemFragmentType);
             startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {

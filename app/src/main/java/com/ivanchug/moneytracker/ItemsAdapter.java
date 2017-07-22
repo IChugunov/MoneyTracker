@@ -1,5 +1,6 @@
 package com.ivanchug.moneytracker;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -22,11 +23,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
-    private MainActivity context;
+    private Context context;
     private SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
 
 
-    public ItemsAdapter(MainActivity context) {
+    public ItemsAdapter(Context context) {
         this.context = context;
     }
 
@@ -59,7 +60,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         return itemsToShow.get(position).getItemType();
     }
 
-    private TreeMap<String, List<Item>> divideByDate(List<Item> items) {
+    public TreeMap<String, List<Item>> divideByDate(List<Item> items) {
 
         TreeMap<String, List<Item>> result = new TreeMap<>(Collections.reverseOrder());
 
@@ -100,8 +101,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         itemsToShow.add(1, item);
         notifyItemInserted(1);
         String type = item.getType();
-        int newTotal = context.getTotals(type) + item.getPrice();
-        context.setTotals(newTotal, type);
+        int newTotal = ((MainActivity) context).getTotals(type) + item.getPrice();
+        ((MainActivity) context).setTotals(newTotal, type);
     }
 
     public void addAll(List<Item> items, int menuItemSelected) {
@@ -114,7 +115,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             for (Item item : itemsSortedByTimeLapse) {
                 totalAmount += item.getPrice();
             }
-            context.setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
+            ((MainActivity) context).setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
         }
 
         TreeMap<String, List<Item>> itemsDividedByDate = divideByDate(itemsSortedByTimeLapse);
@@ -126,6 +127,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
                 itemsToShow.add(item);
             }
         }
+
+        notifyDataSetChanged();
+
+    }
+
+    public void addAll(List<AbstractItem> items) {
+
+        itemsToShow.addAll(items);
 
         notifyDataSetChanged();
 
@@ -154,8 +163,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         final Item item = (Item) itemsToShow.remove(position);
         String type = item.getType();
         notifyItemRemoved(position);
-        int newTotal = context.getTotals(type) - item.getPrice();
-        context.setTotals(newTotal, type);
+        int newTotal = ((MainActivity) context).getTotals(type) - item.getPrice();
+        ((MainActivity) context).setTotals(newTotal, type);
         return item;
     }
 
@@ -192,6 +201,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         }
 
         return result;
+    }
+
+    public List<AbstractItem> getItemsToShow() {
+        return itemsToShow;
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {

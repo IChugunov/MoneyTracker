@@ -4,6 +4,7 @@ package com.ivanchug.moneytracker;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -23,7 +24,7 @@ public class CategoriesFragment extends Fragment {
     private static final int LOADER_ADD = 1;
     private static final int LOADER_REMOVE = 2;
 
-    CategoriesAdapter adapter;
+    private CategoriesAdapter adapter;
 
 
     public CategoriesFragment() {
@@ -46,10 +47,27 @@ public class CategoriesFragment extends Fragment {
         adapter = new CategoriesAdapter();
         categories.setAdapter(adapter);
 
+
         RecyclerView.ItemAnimator categoryAnimator = new DefaultItemAnimator();
         categoryAnimator.setAddDuration(1000);
         categoryAnimator.setRemoveDuration(1000);
         categories.setItemAnimator(categoryAnimator);
+
+        view.findViewById(R.id.categorybutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SimpleItemsFragment simpleItemsFragment = new SimpleItemsFragment();
+                Bundle args = new Bundle();
+                args.putSerializable(CategoriesActivity.ITEMS_TO_SHOW, ((CategoriesActivity) getActivity()).getItemsToShow());
+                args.putString(CategoriesActivity.CATEGORY, "без категории");
+                simpleItemsFragment.setArguments(args);
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.categories_fragment_container, simpleItemsFragment);
+                ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+        });
 
         loadCategories();
     }

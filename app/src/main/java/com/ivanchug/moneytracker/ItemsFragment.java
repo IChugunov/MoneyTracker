@@ -46,6 +46,7 @@ public class ItemsFragment extends Fragment {
     private View add;
 
 
+
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
@@ -190,6 +191,9 @@ public class ItemsFragment extends Fragment {
         }
     }
 
+    public ItemsAdapter getAdapter() {
+        return adapter;
+    }
 
     void loadItems(final int menuItemSelected) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
