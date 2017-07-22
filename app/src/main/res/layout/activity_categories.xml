@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categories_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ivanchug.moneytracker.CategoriesActivity">
-
-
-    <FrameLayout
-        android:id="@+id/categories_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_category_flbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="@dimen/margin_l"
-        android:padding="@dimen/margin_small"
-        android:src="@drawable/plus" />
-
-</FrameLayout>
+    tools:context="com.ivanchug.moneytracker.CategoriesActivity" />

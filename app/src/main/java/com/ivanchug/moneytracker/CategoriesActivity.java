@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.ivanchug.moneytracker.items.AbstractItem;
 
@@ -18,8 +17,8 @@ public class CategoriesActivity extends AppCompatActivity {
     public static final String CATEGORY = "category";
 
     private String type;
-    private View add;
     private ArrayList<AbstractItem> itemsToShow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +27,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
         type = getIntent().getStringExtra(ARG_TYPE);
         itemsToShow = (ArrayList<AbstractItem>) getIntent().getSerializableExtra(ITEMS_TO_SHOW);
-        add = findViewById(R.id.add_category_flbutton);
 
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

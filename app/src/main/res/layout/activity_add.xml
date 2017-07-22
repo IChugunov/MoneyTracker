@@ -74,4 +74,46 @@
         android:padding="@dimen/margin_small"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
+    <LinearLayout
+        android:id="@+id/new_category_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingStart="@dimen/margin_l"
+        android:paddingEnd="@dimen/margin_l">
+
+        <EditText
+            android:id="@+id/new_category_name"
+            android:layout_width="@dimen/zero_size"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size"
+            android:maxLines="1"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_gravity="center_vertical"
+            android:hint="введите имя" />
+
+
+        <TextView
+            android:id="@+id/add_category"
+            android:enabled="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textSize="40sp"
+            android:paddingStart="@dimen/margin_l"
+            android:layout_gravity="center_vertical"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/new_category_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="новая категория" />
+
 </LinearLayout>

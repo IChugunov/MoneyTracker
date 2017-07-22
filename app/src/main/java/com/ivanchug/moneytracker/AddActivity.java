@@ -28,7 +28,11 @@ public class AddActivity extends AppCompatActivity {
     public static final int RC_ADD_ITEM = 99;
 
     private String type;
-    CategoriesAdapter adapter;
+    private CategoriesAdapter adapter;
+    private View addCategoryLayout;
+    private View newCategoryButton;
+    private EditText newCategoryName;
+    private TextView addCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,12 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         type = getIntent().getStringExtra(EXTRA_TYPE);
+        newCategoryButton = findViewById(R.id.new_category_button);
+        newCategoryName = (EditText) findViewById(R.id.new_category_name);
+        addCategory = (TextView) findViewById(R.id.add_category);
+        addCategoryLayout = findViewById(R.id.new_category_layout);
+        addCategoryLayout.setVisibility(View.GONE);
+
 
         final EditText name = (EditText) findViewById(R.id.add_name);
         final EditText amount = (EditText) findViewById(R.id.add_amount);
@@ -56,6 +66,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*"));
+                addCategory.setEnabled(!TextUtils.isEmpty(newCategoryName.getText()));
             }
 
             @Override
@@ -66,6 +77,18 @@ public class AddActivity extends AppCompatActivity {
 
         name.addTextChangedListener(textWatcher);
         amount.addTextChangedListener(textWatcher);
+        newCategoryName.addTextChangedListener(textWatcher);
+
+        newCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (addCategoryLayout.getVisibility() == View.GONE)
+                    addCategoryLayout.setVisibility(View.VISIBLE);
+                else
+                    addCategoryLayout.setVisibility(View.GONE);
+
+            }
+        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
