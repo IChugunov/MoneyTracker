@@ -53,12 +53,12 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
 
         ContentValues categoriesValues = new ContentValues();
-        categoriesValues.put(NAME, "Без категории");
+        categoriesValues.put(NAME, "Без категории расходы");
         categoriesValues.put(TYPE, Item.TYPE_EXPENSE);
         db.insert(CATEGORIES, null, categoriesValues);
 
         ContentValues categoriesValues1 = new ContentValues();
-        categoriesValues1.put(NAME, "Без категории");
+        categoriesValues1.put(NAME, "Без категории доходы");
         categoriesValues1.put(TYPE, Item.TYPE_INCOME);
         db.insert(CATEGORIES, null, categoriesValues1);
 
@@ -79,6 +79,26 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
                 while (cursor.moveToPrevious())
                     result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
+            }
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+
+    }
+
+    public List<String> getCategories(SQLiteDatabase db, String type) {
+
+        try (Cursor cursor = db.query(CATEGORIES, new String[]{NAME}, "TYPE = ?", new String[]{type}, null, null, null)) {
+            List<String> result = new ArrayList<>();
+            if (cursor.moveToLast()) {
+                result.add(cursor.getString(0));
+                while (cursor.moveToPrevious())
+                    result.add(cursor.getString(0));
             }
 
             return result;

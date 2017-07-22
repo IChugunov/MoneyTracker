@@ -5,13 +5,22 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 public class CategoriesActivity extends AppCompatActivity {
+
+    public static final String ARG_TYPE = "type";
+
+    private String type;
+    private View add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
+
+        type = getIntent().getStringExtra(ARG_TYPE);
+        add = findViewById(R.id.add_category_flbutton);
 
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -29,5 +38,9 @@ public class CategoriesActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public String getType() {
+        return type;
     }
 }

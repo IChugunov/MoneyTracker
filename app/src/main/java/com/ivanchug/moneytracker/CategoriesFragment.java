@@ -4,14 +4,26 @@ package com.ivanchug.moneytracker;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.List;
 
 
 public class CategoriesFragment extends Fragment {
+
+    private static final int LOADER_CATEGORIES = 0;
+    private static final int LOADER_ADD = 1;
+    private static final int LOADER_REMOVE = 2;
+
+    CategoriesAdapter adapter;
 
 
     public CategoriesFragment() {
@@ -31,12 +43,51 @@ public class CategoriesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         final RecyclerView categories = (RecyclerView) view.findViewById(R.id.categories);
-        CategoriesAdapter adapter = new CategoriesAdapter();
+        adapter = new CategoriesAdapter();
         categories.setAdapter(adapter);
 
         RecyclerView.ItemAnimator categoryAnimator = new DefaultItemAnimator();
         categoryAnimator.setAddDuration(1000);
         categoryAnimator.setRemoveDuration(1000);
         categories.setItemAnimator(categoryAnimator);
+
+        loadCategories();
+    }
+
+    void loadCategories() {
+        getActivity().getSupportLoaderManager().restartLoader(LOADER_CATEGORIES, null, new LoaderManager.LoaderCallbacks<List<String>>() {
+            @Override
+            public Loader<List<String>> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<List<String>>(getContext()) {
+                    @Override
+                    public List<String> loadInBackground() {
+
+                        try {
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.getCategories(dbHelper.getReadableDatabase(), ((CategoriesActivity) getActivity()).getType());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                };
+            }
+
+            @Override
+            public void onLoadFinished(Loader<List<String>> loader, List<String> data) {
+                if (data == null) {
+                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+                } else {
+                    adapter.clear();
+                    adapter.addAll(data);
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<List<String>> loader) {
+
+            }
+        }).forceLoad();
     }
 }

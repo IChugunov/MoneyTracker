@@ -64,7 +64,12 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(BalanceActivity.BALANCE_RESULT, new BalanceResult(totalExpenses, totalIncome));
             startActivity(intent);
         } else if (itemId == R.id.action_categories) {
+            int selectedTadPosition = tabs.getSelectedTabPosition();
+            String itemFragmentType = Item.TYPE_EXPENSE;
+            if (selectedTadPosition == 1)
+                itemFragmentType = Item.TYPE_INCOME;
             final Intent intent = new Intent(this, CategoriesActivity.class);
+            intent.putExtra(CategoriesActivity.ARG_TYPE, itemFragmentType);
             startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {
 
