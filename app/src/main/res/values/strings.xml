@@ -20,8 +20,15 @@
     <string name="time_lapse_year">Год</string>
     <string name="time_lapse_all">Все</string>
     <string name="action_show_balance">Баланс за выбранный период</string>
+    <string name="action_categories">Показать категории</string>
     <array name="main_pager_titles">
         <item>@string/expenses</item>
         <item>@string/incomes</item>
     </array>
+    <string name="title_activity_categories">CategoriesActivity</string>
+    <string name="categories">Категории</string>
+    <string name="choose_category">Выберите категорию</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

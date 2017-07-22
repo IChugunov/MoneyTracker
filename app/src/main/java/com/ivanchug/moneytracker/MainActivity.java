@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
             final Intent intent = new Intent(this, BalanceActivity.class);
             intent.putExtra(BalanceActivity.BALANCE_RESULT, new BalanceResult(totalExpenses, totalIncome));
             startActivity(intent);
+        } else if (itemId == R.id.action_categories) {
+            final Intent intent = new Intent(this, CategoriesActivity.class);
+            startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {
 
             switch (itemId) {
