@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/amount_hint"
                 android:textSize="@dimen/text_size"
+                android:maxLines="1"
                 android:inputType="number"
                 android:background="@android:color/transparent"
                 android:layout_gravity="center_vertical"

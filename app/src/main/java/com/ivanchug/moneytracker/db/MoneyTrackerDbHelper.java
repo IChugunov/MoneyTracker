@@ -141,4 +141,18 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public String addCategory(SQLiteDatabase db, String category, String type) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(NAME, category);
+            values.put(TYPE, type);
+            db.insert(CATEGORIES, null, values);
+            return category;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+    }
 }

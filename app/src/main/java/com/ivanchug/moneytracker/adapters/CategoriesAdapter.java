@@ -39,7 +39,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         return categories.size();
     }
 
-    void add(String category) {
+    public void add(String category) {
         categories.add(0, category);
         notifyItemInserted(0);
     }

@@ -102,6 +102,15 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        addCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCategory(newCategoryName.getText().toString());
+                newCategoryName.setText("");
+                addCategoryLayout.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @Override
@@ -158,6 +167,41 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onLoaderReset(Loader<List<String>> loader) {
+
+            }
+        }).forceLoad();
+    }
+
+    private void addCategory(final String category) {
+        getSupportLoaderManager().restartLoader(category.hashCode(), null, new LoaderManager.LoaderCallbacks<String>() {
+            @Override
+            public Loader<String> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<String>(AddActivity.this) {
+                    @Override
+                    public String loadInBackground() {
+                        try {
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.addCategory(dbHelper.getWritableDatabase(), category, type);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                };
+            }
+
+            @Override
+            public void onLoadFinished(Loader<String> loader, String data) {
+                if (data == null) {
+                    Toast.makeText(AddActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                } else {
+                    adapter.add(data);
+
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<String> loader) {
 
             }
         }).forceLoad();
