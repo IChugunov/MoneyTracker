@@ -11,12 +11,10 @@ import android.widget.TextView;
 import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.HeaderItem;
 import com.ivanchug.moneytracker.items.Item;
-import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
@@ -79,26 +77,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         ((MainActivity) context).setTotals(newTotal, type);
     }
 
-    public void addAll(List<Item> items, int menuItemSelected) {
 
-        List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, menuItemSelected);
-
-        int totalAmount = 0;
-
-        if (itemsSortedByTimeLapse != null && !itemsSortedByTimeLapse.isEmpty()) {
-            for (Item item : itemsSortedByTimeLapse) {
-                totalAmount += item.getPrice();
-            }
-            ((MainActivity) context).setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
-        }
-
-        TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsSortedByTimeLapse);
-
-        itemsToShow = ItemsSortingUtil.sortItemsToShow(itemsDividedByDate);
-
-        notifyDataSetChanged();
-
-    }
 
     public void addAll(List<AbstractItem> items) {
 

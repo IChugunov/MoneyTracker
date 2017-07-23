@@ -1,5 +1,9 @@
 package com.ivanchug.moneytracker.items;
 
+import android.content.Context;
+
+import com.ivanchug.moneytracker.MainActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,5 +76,33 @@ public class ItemsSortingUtil {
             }
         }
         return itemsToShow;
+    }
+
+    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, int menuItemSelected, Context context) {
+        List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, menuItemSelected);
+
+        int totalAmount = 0;
+
+        if (itemsSortedByTimeLapse != null && !itemsSortedByTimeLapse.isEmpty()) {
+            for (Item item : itemsSortedByTimeLapse) {
+                totalAmount += item.getPrice();
+            }
+            ((MainActivity) context).setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
+        }
+
+        TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsSortedByTimeLapse);
+
+        return ItemsSortingUtil.sortItemsToShow(itemsDividedByDate);
+    }
+
+    public static List<AbstractItem> prepareItemsForSimpleItemsFragment(List<AbstractItem> receivedItems, String category) {
+        List<Item> itemsWithoutHeaders = new ArrayList<>();
+        for (AbstractItem item : receivedItems) {
+            if (item instanceof Item && ((Item) item).getCategory().equals(category))
+                itemsWithoutHeaders.add((Item) item);
+        }
+
+        TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsWithoutHeaders);
+        return ItemsSortingUtil.sortItemsToShow(itemsDividedByDate);
     }
 }

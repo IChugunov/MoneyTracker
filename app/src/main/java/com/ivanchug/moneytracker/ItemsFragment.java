@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.items.Item;
+import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.util.List;
 
@@ -224,7 +225,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(data, menuItemSelected);
+                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, menuItemSelected, getContext()));
                 }
             }
 
