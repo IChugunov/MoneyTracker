@@ -16,8 +16,10 @@ import android.view.MenuItem;
 import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.BalanceResult;
 import com.ivanchug.moneytracker.items.Item;
+import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabs;
     private ViewPager pages;
     private ArrayList<ItemsFragment> itemsFragments = new ArrayList<>();
+    private ArrayList<Item> expensesItems;
+    private ArrayList<Item> incomeItems;
+
     private int menuItemSelected = 3;
 
 
@@ -89,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
             }
-            for (ItemsFragment fragment : itemsFragments) {
-                fragment.loadItems(menuItemSelected);
-            }
-
+            itemsFragments.get(0).getAdapter().clear();
+            itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, menuItemSelected, this));
+            itemsFragments.get(1).getAdapter().clear();
+            itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, menuItemSelected, this));
         }
 
 
@@ -130,6 +135,21 @@ public class MainActivity extends AppCompatActivity {
             totalExpenses = totalsAmount;
         else
             totalIncome = totalsAmount;
+    }
+
+    public List<Item> getAllItems(String type) {
+        if (type.equals(Item.TYPE_EXPENSE))
+            return expensesItems;
+        else
+            return incomeItems;
+    }
+
+    public void setAllItems(List<Item> items, String type) {
+        if (type.equals(Item.TYPE_EXPENSE))
+            expensesItems = (ArrayList<Item>) items;
+        else
+            incomeItems = (ArrayList<Item>) items;
+        ;
     }
 
     public int getMenuItemSelected() {

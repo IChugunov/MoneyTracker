@@ -226,6 +226,7 @@ public class ItemsFragment extends Fragment {
                 } else {
                     adapter.clear();
                     adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, menuItemSelected, getContext()));
+                    ((MainActivity) getActivity()).setAllItems(data, type);
                 }
             }
 
@@ -260,6 +261,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.add(item);
+                    ((MainActivity) getActivity()).getAllItems(type).add(0, item);
                 }
             }
 
@@ -293,7 +295,7 @@ public class ItemsFragment extends Fragment {
                 if (data == null) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
-                    //adapter.remove(item);
+                    ((MainActivity) getActivity()).getAllItems(type).remove(item);
                 }
             }
 

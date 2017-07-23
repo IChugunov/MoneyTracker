@@ -57,7 +57,10 @@ public class Item extends AbstractItem implements Serializable {
         if (id != item.id) return false;
         if (price != item.price) return false;
         if (name != null ? !name.equals(item.name) : item.name != null) return false;
-        return type != null ? type.equals(item.type) : item.type == null;
+        if (type != null ? !type.equals(item.type) : item.type != null) return false;
+        if (category != null ? !category.equals(item.category) : item.category != null)
+            return false;
+        return date != null ? date.equals(item.date) : item.date == null;
 
     }
 
@@ -67,6 +70,8 @@ public class Item extends AbstractItem implements Serializable {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + price;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 
