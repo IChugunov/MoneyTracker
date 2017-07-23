@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ivanchug.moneytracker.items.AbstractItem;
-import com.ivanchug.moneytracker.items.HeaderItem;
 import com.ivanchug.moneytracker.items.Item;
+import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,15 +53,9 @@ public class SimpleItemsFragment extends Fragment {
                 itemsWithoutHeaders.add((Item) item);
         }
 
-        TreeMap<String, List<Item>> itemsDividedByDate = adapter.divideByDate(itemsWithoutHeaders);
-        List<AbstractItem> itemsToShow = new ArrayList<>();
-        for (String date : itemsDividedByDate.keySet()) {
-            HeaderItem header = new HeaderItem(date);
-            itemsToShow.add(header);
-            for (Item item : itemsDividedByDate.get(date)) {
-                itemsToShow.add(item);
-            }
-        }
+        TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsWithoutHeaders);
+        List<AbstractItem> itemsToShow = ItemsSortingUtil.sortItemsToShow(itemsDividedByDate);
+
 
         adapter.addAll(itemsToShow);
 
