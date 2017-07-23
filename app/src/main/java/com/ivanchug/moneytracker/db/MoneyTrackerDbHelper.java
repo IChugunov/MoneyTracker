@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ivanchug.moneytracker.R;
 import com.ivanchug.moneytracker.items.Item;
 
 import java.util.ArrayList;
@@ -29,8 +30,11 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     private static final String CATEGORY = "CATEGORY";
     private static final String CATEGORIES = "CATEGORIES";
 
+    private Context context;
+
     public MoneyTrackerDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -54,12 +58,12 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
 
         ContentValues categoriesValues = new ContentValues();
-        categoriesValues.put(NAME, "Без категории расходы");
+        categoriesValues.put(NAME, context.getString(R.string.expenses_base_category));
         categoriesValues.put(TYPE, Item.TYPE_EXPENSE);
         db.insert(CATEGORIES, null, categoriesValues);
 
         ContentValues categoriesValues1 = new ContentValues();
-        categoriesValues1.put(NAME, "Без категории доходы");
+        categoriesValues1.put(NAME, context.getString(R.string.income_base_category));
         categoriesValues1.put(TYPE, Item.TYPE_INCOME);
         db.insert(CATEGORIES, null, categoriesValues1);
 
@@ -120,6 +124,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             values.put(TYPE, item.getType());
             values.put(ID, item.getId());
             values.put(DATE, item.getDate().getTime());
+            values.put(CATEGORY, item.getCategory());
             db.insert(ITEMS, null, values);
             return item;
         } catch (Exception e) {

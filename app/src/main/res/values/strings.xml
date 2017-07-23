@@ -29,6 +29,8 @@
     <string name="categories">Категории</string>
     <string name="choose_category">Выберите категорию</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expenses_base_category">Без категории расходы</string>
+    <string name="income_base_category">Без категории доходы</string>
 </resources>

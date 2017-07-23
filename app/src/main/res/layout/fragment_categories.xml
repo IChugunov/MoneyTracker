@@ -22,10 +22,5 @@
         android:padding="@dimen/margin_small"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-    <Button
-        android:id="@+id/categorybutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="items" />
 
 </LinearLayout>

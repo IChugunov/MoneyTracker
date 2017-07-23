@@ -30,12 +30,15 @@ public class AddActivity extends AppCompatActivity {
     public static final int RC_ADD_ITEM = 99;
 
     private String type;
-    private String category;
+    private String category = "";
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
     private View newCategoryButton;
     private EditText newCategoryName;
     private TextView addCategory;
+    private EditText name;
+    private EditText amount;
+    private TextView add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +46,18 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         type = getIntent().getStringExtra(EXTRA_TYPE);
+
         newCategoryButton = findViewById(R.id.new_category_button);
         newCategoryName = (EditText) findViewById(R.id.new_category_name);
         addCategory = (TextView) findViewById(R.id.add_category);
         addCategoryLayout = findViewById(R.id.new_category_layout);
         addCategoryLayout.setVisibility(View.GONE);
-
-
-        final EditText name = (EditText) findViewById(R.id.add_name);
-        final EditText amount = (EditText) findViewById(R.id.add_amount);
-        final TextView add = (TextView) findViewById(R.id.add);
+        name = (EditText) findViewById(R.id.add_name);
+        amount = (EditText) findViewById(R.id.add_amount);
+        add = (TextView) findViewById(R.id.add);
 
         final RecyclerView categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
-        adapter = new CategoriesAdapter();
+        adapter = new CategoriesAdapter(this);
         categories.setAdapter(adapter);
         loadCategories();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -68,7 +70,7 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*"));
+                canAddItem();
                 addCategory.setEnabled(!TextUtils.isEmpty(newCategoryName.getText()));
             }
 
@@ -125,6 +127,17 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void canAddItem() {
+        add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*") && !TextUtils.isEmpty(category));
+    }
 
     @Override
     protected void onResume() {

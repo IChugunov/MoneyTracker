@@ -42,7 +42,7 @@ public class Item extends AbstractItem implements Serializable {
         this.type = type;
         this.id = id;
         this.price = price;
-        category = "без категории";
+        this.category = category;
         this.date = date;
         this.category = category;
 
