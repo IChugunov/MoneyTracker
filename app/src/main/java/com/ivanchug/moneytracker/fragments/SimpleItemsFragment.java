@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker;
+package com.ivanchug.moneytracker.fragments;
 
 
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ivanchug.moneytracker.CategoriesActivity;
+import com.ivanchug.moneytracker.R;
+import com.ivanchug.moneytracker.adapters.ItemsAdapter;
 import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 

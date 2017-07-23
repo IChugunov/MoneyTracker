@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style="@style/AppBackground"
-    tools:context="com.ivanchug.moneytracker.CategoriesFragment">
+    tools:context="com.ivanchug.moneytracker.fragments.CategoriesFragment">
 
     <TextView
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker;
+package com.ivanchug.moneytracker.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ivanchug.moneytracker.MainActivity;
+import com.ivanchug.moneytracker.R;
 import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.HeaderItem;
 import com.ivanchug.moneytracker.items.Item;

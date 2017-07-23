@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker;
+package com.ivanchug.moneytracker.db;
 
 import android.content.ContentValues;
 import android.content.Context;

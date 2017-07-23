@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ivanchug.moneytracker.fragments.ItemsFragment;
 import com.ivanchug.moneytracker.items.AbstractItem;
 import com.ivanchug.moneytracker.items.BalanceResult;
 import com.ivanchug.moneytracker.items.Item;
