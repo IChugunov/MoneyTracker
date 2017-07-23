@@ -30,6 +30,7 @@ public class AddActivity extends AppCompatActivity {
     public static final int RC_ADD_ITEM = 99;
 
     private String type;
+    private String category;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
     private View newCategoryButton;
@@ -96,7 +97,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent result = new Intent();
-                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this));
+                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this, category));
                 setResult(RESULT_OK, result);
                 finish();
             }

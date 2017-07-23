@@ -26,24 +26,25 @@ public class Item extends AbstractItem implements Serializable {
     private Date date;
 
 
-    public Item(String name, int price, String type, Activity activity) {
+    public Item(String name, int price, String type, Activity activity, String category) {
         nextId = ((LsApp) activity.getApplication()).getItemNextId();
         this.name = name;
         this.price = price;
         this.type = type;
         id = nextId++;
         date = new Date();
-        category = "без категории";
+        this.category = category;
         ((LsApp) activity.getApplication()).setItemNextId(nextId);
     }
 
-    public Item(String name, int price, String type, long id, Date date) {
+    public Item(String name, int price, String type, long id, Date date, String category) {
         this.name = name;
         this.type = type;
         this.id = id;
         this.price = price;
         category = "без категории";
         this.date = date;
+        this.category = category;
 
     }
 

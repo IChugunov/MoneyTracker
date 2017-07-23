@@ -26,6 +26,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     private static final String PRICE = "PRICE";
     private static final String NAME = "NAME";
     private static final String DATE = "DATE";
+    private static final String CATEGORY = "CATEGORY";
     private static final String CATEGORIES = "CATEGORIES";
 
     public MoneyTrackerDbHelper(Context context) {
@@ -73,12 +74,12 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public List<Item> getItems(SQLiteDatabase db, String type) {
 
-        try (Cursor cursor = db.query(ITEMS, new String[]{NAME, PRICE, ID, DATE}, "TYPE = ?", new String[]{type}, null, null, null)) {
+        try (Cursor cursor = db.query(ITEMS, new String[]{NAME, PRICE, ID, DATE, CATEGORY}, "TYPE = ?", new String[]{type}, null, null, null)) {
             List<Item> result = new ArrayList<>();
             if (cursor.moveToLast()) {
-                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
+                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3)), cursor.getString(4)));
                 while (cursor.moveToPrevious())
-                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
+                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3)), cursor.getString(4)));
             }
 
             return result;
