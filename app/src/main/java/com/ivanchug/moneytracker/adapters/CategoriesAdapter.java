@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +24,9 @@ import java.util.List;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder> {
 
     private List<String> categories = new ArrayList<>();
-    private SparseBooleanArray selectedCategories = new SparseBooleanArray();
     private Context context;
     private View previousView;
+    private int selectedCategoryPosition;
 
     public CategoriesAdapter(Context context) {
         this.context = context;
@@ -63,40 +62,21 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         notifyDataSetChanged();
     }
 
-    public void toggleSelection(int pos) {
-        if (pos == -1)
-            return;
-        if (selectedCategories.get(pos, false)) {
-            selectedCategories.delete(pos);
-        } else {
-            selectedCategories.put(pos, true);
-        }
-        notifyItemChanged(pos);
-    }
-
 
     public void clear() {
         categories.clear();
     }
 
 
-    public String remove(int position) {
-        final String category = categories.remove(position);
-        notifyItemRemoved(position);
+    public String remove() {
+        final String category = categories.remove(selectedCategoryPosition);
+        notifyItemRemoved(selectedCategoryPosition);
+        previousView = null;
         return category;
     }
 
-    public void clearSelections() {
-        selectedCategories.clear();
-        notifyDataSetChanged();
-    }
-
-    public List<Integer> getSelectedCategories() {
-        List<Integer> categories = new ArrayList<>(selectedCategories.size());
-        for (int i = 0; i < selectedCategories.size(); i++) {
-            categories.add(selectedCategories.keyAt(i));
-        }
-        return categories;
+    public void setSelectedCategoryPosition(int selectedCategoryPosition) {
+        this.selectedCategoryPosition = selectedCategoryPosition;
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -122,6 +102,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                     if (previousView != null)
                         previousView.setBackgroundResource(R.color.colorExpense);
                     previousView = v;
+                    selectedCategoryPosition = getAdapterPosition();
                     addActivity.setRemoveState();
                 }
 

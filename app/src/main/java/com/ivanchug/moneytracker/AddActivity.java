@@ -43,7 +43,7 @@ public class AddActivity extends AppCompatActivity {
     private EditText name;
     private EditText amount;
     private TextView add;
-    MenuItem remove;
+    private MenuItem remove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +149,7 @@ public class AddActivity extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                removeCategory();
                                 setRemoveState();
                             }
                         })
@@ -178,6 +179,7 @@ public class AddActivity extends AppCompatActivity {
     public void setRemoveState() {
         remove.setVisible(!category.equals(baseCategory));
     }
+
 
 
     @Override
@@ -252,6 +254,42 @@ public class AddActivity extends AppCompatActivity {
                 } else {
                     adapter.add(data);
 
+                }
+            }
+
+            @Override
+            public void onLoaderReset(Loader<String> loader) {
+
+            }
+        }).forceLoad();
+    }
+
+    private void removeCategory() {
+        getSupportLoaderManager().restartLoader(category.hashCode(), null, new LoaderManager.LoaderCallbacks<String>() {
+            @Override
+            public Loader<String> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<String>(AddActivity.this) {
+                    @Override
+                    public String loadInBackground() {
+                        try {
+                            MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
+                            return dbHelper.removeCategory(dbHelper.getWritableDatabase(), category, type);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                };
+            }
+
+            @Override
+            public void onLoadFinished(Loader<String> loader, String data) {
+                if (data == null) {
+                    Toast.makeText(AddActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                } else {
+                    adapter.remove();
+                    category = baseCategory;
+                    setRemoveState();
                 }
             }
 

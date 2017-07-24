@@ -161,4 +161,25 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
+
+    public String removeCategory(SQLiteDatabase db, String category, String type) {
+        try {
+            db.delete(CATEGORIES, "NAME = ? AND TYPE = ?", new String[]{category, type});
+
+            String baseCategory = null;
+            if (type.equals(Item.TYPE_EXPENSE))
+                baseCategory = context.getString(R.string.expenses_base_category);
+            else
+                baseCategory = context.getString(R.string.income_base_category);
+            ContentValues values = new ContentValues();
+            values.put(CATEGORY, baseCategory);
+            db.update(ITEMS, values, "TYPE = ?", new String[]{type});
+            return category;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+    }
 }
