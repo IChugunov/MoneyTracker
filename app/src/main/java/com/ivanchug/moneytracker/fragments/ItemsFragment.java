@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker;
+package com.ivanchug.moneytracker.fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ivanchug.moneytracker.AddActivity;
+import com.ivanchug.moneytracker.MainActivity;
+import com.ivanchug.moneytracker.R;
+import com.ivanchug.moneytracker.adapters.ItemsAdapter;
+import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
+import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.util.List;
 
@@ -46,11 +52,12 @@ public class ItemsFragment extends Fragment {
     private View add;
 
 
+
     private ActionMode actionMode;
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.itemsfragment_menu, menu);
+            mode.getMenuInflater().inflate(R.menu.remove_menu, menu);
             add.setVisibility(View.INVISIBLE);
             return true;
         }
@@ -66,7 +73,7 @@ public class ItemsFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.menu_remove:
                     new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.app_name)
+                            .setTitle(R.string.money_tracker)
                             .setMessage(R.string.confirm_remove)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
@@ -190,6 +197,9 @@ public class ItemsFragment extends Fragment {
         }
     }
 
+    public ItemsAdapter getAdapter() {
+        return adapter;
+    }
 
     void loadItems(final int menuItemSelected) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
@@ -220,7 +230,8 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(data, menuItemSelected);
+                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, menuItemSelected, getContext()));
+                    ((MainActivity) getActivity()).setAllItems(data, type);
                 }
             }
 
@@ -255,6 +266,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.add(item);
+                    ((MainActivity) getActivity()).getAllItems(type).add(0, item);
                 }
             }
 
@@ -288,7 +300,7 @@ public class ItemsFragment extends Fragment {
                 if (data == null) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
-                    //adapter.remove(item);
+                    ((MainActivity) getActivity()).getAllItems(type).remove(item);
                 }
             }
 

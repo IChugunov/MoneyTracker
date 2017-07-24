@@ -26,24 +26,25 @@ public class Item extends AbstractItem implements Serializable {
     private Date date;
 
 
-    public Item(String name, int price, String type, Activity activity) {
+    public Item(String name, int price, String type, Activity activity, String category) {
         nextId = ((LsApp) activity.getApplication()).getItemNextId();
         this.name = name;
         this.price = price;
         this.type = type;
         id = nextId++;
         date = new Date();
-        category = "без категории";
+        this.category = category;
         ((LsApp) activity.getApplication()).setItemNextId(nextId);
     }
 
-    public Item(String name, int price, String type, long id, Date date) {
+    public Item(String name, int price, String type, long id, Date date, String category) {
         this.name = name;
         this.type = type;
         this.id = id;
         this.price = price;
-        category = "без категории";
+        this.category = category;
         this.date = date;
+        this.category = category;
 
     }
 
@@ -57,7 +58,10 @@ public class Item extends AbstractItem implements Serializable {
         if (id != item.id) return false;
         if (price != item.price) return false;
         if (name != null ? !name.equals(item.name) : item.name != null) return false;
-        return type != null ? type.equals(item.type) : item.type == null;
+        if (type != null ? !type.equals(item.type) : item.type != null) return false;
+        if (category != null ? !category.equals(item.category) : item.category != null)
+            return false;
+        return date != null ? date.equals(item.date) : item.date == null;
 
     }
 
@@ -67,6 +71,8 @@ public class Item extends AbstractItem implements Serializable {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + price;
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
     }
 
@@ -106,4 +112,6 @@ public class Item extends AbstractItem implements Serializable {
     public int getItemType() {
         return ITEM_TYPE_ITEM;
     }
+
+
 }

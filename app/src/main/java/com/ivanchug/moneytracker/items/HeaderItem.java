@@ -1,10 +1,12 @@
 package com.ivanchug.moneytracker.items;
 
+import java.io.Serializable;
+
 /**
  * Created by Иван on 19.07.2017.
  */
 
-public class HeaderItem extends AbstractItem {
+public class HeaderItem extends AbstractItem implements Serializable {
     private String date;
 
     public String getDate() {

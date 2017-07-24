@@ -1,4 +1,4 @@
-package com.ivanchug.moneytracker;
+package com.ivanchug.moneytracker.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.ivanchug.moneytracker.R;
 import com.ivanchug.moneytracker.items.Item;
 
 import java.util.ArrayList;
@@ -26,10 +27,14 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
     private static final String PRICE = "PRICE";
     private static final String NAME = "NAME";
     private static final String DATE = "DATE";
+    private static final String CATEGORY = "CATEGORY";
     private static final String CATEGORIES = "CATEGORIES";
+
+    private Context context;
 
     public MoneyTrackerDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -53,12 +58,12 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
 
         ContentValues categoriesValues = new ContentValues();
-        categoriesValues.put(NAME, "Без категории");
+        categoriesValues.put(NAME, context.getString(R.string.expenses_base_category));
         categoriesValues.put(TYPE, Item.TYPE_EXPENSE);
         db.insert(CATEGORIES, null, categoriesValues);
 
         ContentValues categoriesValues1 = new ContentValues();
-        categoriesValues1.put(NAME, "Без категории");
+        categoriesValues1.put(NAME, context.getString(R.string.income_base_category));
         categoriesValues1.put(TYPE, Item.TYPE_INCOME);
         db.insert(CATEGORIES, null, categoriesValues1);
 
@@ -73,12 +78,32 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
 
     public List<Item> getItems(SQLiteDatabase db, String type) {
 
-        try (Cursor cursor = db.query(ITEMS, new String[]{NAME, PRICE, ID, DATE}, "TYPE = ?", new String[]{type}, null, null, null)) {
+        try (Cursor cursor = db.query(ITEMS, new String[]{NAME, PRICE, ID, DATE, CATEGORY}, "TYPE = ?", new String[]{type}, null, null, null)) {
             List<Item> result = new ArrayList<>();
             if (cursor.moveToLast()) {
-                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
+                result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3)), cursor.getString(4)));
                 while (cursor.moveToPrevious())
-                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3))));
+                    result.add(new Item(cursor.getString(0), cursor.getInt(1), type, cursor.getLong(2), new Date(cursor.getLong(3)), cursor.getString(4)));
+            }
+
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+
+    }
+
+    public List<String> getCategories(SQLiteDatabase db, String type) {
+
+        try (Cursor cursor = db.query(CATEGORIES, new String[]{NAME}, "TYPE = ?", new String[]{type}, null, null, null)) {
+            List<String> result = new ArrayList<>();
+            if (cursor.moveToLast()) {
+                result.add(cursor.getString(0));
+                while (cursor.moveToPrevious())
+                    result.add(cursor.getString(0));
             }
 
             return result;
@@ -99,6 +124,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             values.put(TYPE, item.getType());
             values.put(ID, item.getId());
             values.put(DATE, item.getDate().getTime());
+            values.put(CATEGORY, item.getCategory());
             db.insert(ITEMS, null, values);
             return item;
         } catch (Exception e) {
@@ -121,4 +147,39 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public String addCategory(SQLiteDatabase db, String category, String type) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(NAME, category);
+            values.put(TYPE, type);
+            db.insert(CATEGORIES, null, values);
+            return category;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+    }
+
+    public String removeCategory(SQLiteDatabase db, String category, String type) {
+        try {
+            db.delete(CATEGORIES, "NAME = ? AND TYPE = ?", new String[]{category, type});
+
+            String baseCategory = null;
+            if (type.equals(Item.TYPE_EXPENSE))
+                baseCategory = context.getString(R.string.expenses_base_category);
+            else
+                baseCategory = context.getString(R.string.income_base_category);
+            ContentValues values = new ContentValues();
+            values.put(CATEGORY, baseCategory);
+            db.update(ITEMS, values, "TYPE = ?", new String[]{type});
+            return category;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            db.close();
+        }
+    }
 }
