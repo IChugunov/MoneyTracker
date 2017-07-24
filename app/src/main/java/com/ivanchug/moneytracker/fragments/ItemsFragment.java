@@ -73,7 +73,7 @@ public class ItemsFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.menu_remove:
                     new AlertDialog.Builder(getContext())
-                            .setTitle(R.string.app_name)
+                            .setTitle(R.string.money_tracker)
                             .setMessage(R.string.confirm_remove)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
