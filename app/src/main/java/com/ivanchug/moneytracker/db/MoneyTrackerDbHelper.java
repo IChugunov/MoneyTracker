@@ -173,7 +173,7 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 baseCategory = context.getString(R.string.income_base_category);
             ContentValues values = new ContentValues();
             values.put(CATEGORY, baseCategory);
-            db.update(ITEMS, values, "TYPE = ?", new String[]{type});
+            db.update(ITEMS, values, "TYPE = ? AND CATEGORY = ?", new String[]{type, category});
             return category;
         } catch (Exception e) {
             e.printStackTrace();
