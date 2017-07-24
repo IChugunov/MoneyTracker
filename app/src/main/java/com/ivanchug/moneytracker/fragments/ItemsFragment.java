@@ -57,7 +57,7 @@ public class ItemsFragment extends Fragment {
     private ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.itemsfragment_menu, menu);
+            mode.getMenuInflater().inflate(R.menu.remove_menu, menu);
             add.setVisibility(View.INVISIBLE);
             return true;
         }

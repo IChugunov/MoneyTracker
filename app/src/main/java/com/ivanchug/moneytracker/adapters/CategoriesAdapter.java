@@ -122,6 +122,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                     if (previousView != null)
                         previousView.setBackgroundResource(R.color.colorExpense);
                     previousView = v;
+                    addActivity.setRemoveState();
                 }
 
 

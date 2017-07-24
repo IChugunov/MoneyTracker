@@ -1,15 +1,18 @@
 package com.ivanchug.moneytracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,6 +33,7 @@ public class AddActivity extends AppCompatActivity {
     public static final int RC_ADD_ITEM = 99;
 
     private String type;
+    private String baseCategory;
     private String category;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
@@ -39,6 +43,7 @@ public class AddActivity extends AppCompatActivity {
     private EditText name;
     private EditText amount;
     private TextView add;
+    MenuItem remove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +52,11 @@ public class AddActivity extends AppCompatActivity {
 
         type = getIntent().getStringExtra(EXTRA_TYPE);
         if (type.equals(Item.TYPE_EXPENSE))
-            category = getString(R.string.expenses_base_category);
+            baseCategory = getString(R.string.expenses_base_category);
         else
-            category = getString(R.string.income_base_category);
+            baseCategory = getString(R.string.income_base_category);
+
+        category = baseCategory;
 
 
         newCategoryButton = findViewById(R.id.new_category_button);
@@ -122,10 +129,38 @@ public class AddActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.remove_menu, menu);
+        remove = menu.getItem(0);
+        setRemoveState();
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.menu_remove:
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.money_tracker)
+                        .setMessage(R.string.confirm_remove)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setRemoveState();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                setRemoveState();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -138,6 +173,10 @@ public class AddActivity extends AppCompatActivity {
 
     public String getCategory() {
         return category;
+    }
+
+    public void setRemoveState() {
+        remove.setVisible(!category.equals(baseCategory));
     }
 
 
