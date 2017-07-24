@@ -57,6 +57,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
     public void addAll(List<String> categories) {
+        if (context instanceof AddActivity)
+            categories.remove(categories.size() - 1);
         this.categories.addAll(categories);
         notifyDataSetChanged();
     }
@@ -120,7 +122,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                     if (previousView != null)
                         previousView.setBackgroundResource(R.color.colorExpense);
                     previousView = v;
-                    addActivity.canAddItem();
                 }
 
 

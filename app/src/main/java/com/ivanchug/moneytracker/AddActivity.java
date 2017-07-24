@@ -30,7 +30,7 @@ public class AddActivity extends AppCompatActivity {
     public static final int RC_ADD_ITEM = 99;
 
     private String type;
-    private String category = "";
+    private String category;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
     private View newCategoryButton;
@@ -46,6 +46,11 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         type = getIntent().getStringExtra(EXTRA_TYPE);
+        if (type.equals(Item.TYPE_EXPENSE))
+            category = getString(R.string.expenses_base_category);
+        else
+            category = getString(R.string.income_base_category);
+
 
         newCategoryButton = findViewById(R.id.new_category_button);
         newCategoryName = (EditText) findViewById(R.id.new_category_name);
@@ -70,7 +75,7 @@ public class AddActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                canAddItem();
+                add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*"));
                 addCategory.setEnabled(!TextUtils.isEmpty(newCategoryName.getText()));
             }
 
@@ -135,9 +140,6 @@ public class AddActivity extends AppCompatActivity {
         return category;
     }
 
-    public void canAddItem() {
-        add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*") && !TextUtils.isEmpty(category));
-    }
 
     @Override
     protected void onResume() {
