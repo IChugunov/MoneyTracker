@@ -48,10 +48,10 @@ public class ItemsSortingUtil {
         List<Item> result = new ArrayList<>();
 
         for (Item item : items) {
-            if (timeLapse.equals(format.format(item.getDate())))
+            String date = format.format(item.getDate());
+            if (timeLapse.equals(date))
                 result.add(item);
-            else
-                break;
+
         }
 
         return result;

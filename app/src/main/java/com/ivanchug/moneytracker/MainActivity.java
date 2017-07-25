@@ -95,22 +95,26 @@ public class MainActivity extends AppCompatActivity {
                     format = new SimpleDateFormat("MM.yyyy");
                     date = new Date();
                     timeLapse = format.format(date);
+                    reloadItemsFragments();
                     break;
                 case R.id.time_lapse_year:
                     format = new SimpleDateFormat("yyyy");
                     date = new Date();
                     timeLapse = format.format(date);
+                    reloadItemsFragments();
                     break;
                 case R.id.time_lapse_all:
                     timeLapse = null;
+                    reloadItemsFragments();
                     break;
+                case R.id.choose_time_lapse:
+                    itemsFragments.get(tabs.getSelectedTabPosition()).setDatePanelVisible(true);
+                    //timeLapse = itemsFragments.get(tabs.getSelectedTabPosition()).getSelectedTimeLapse();
+                    //format = new SimpleDateFormat("MM.yyyy");
 
             }
 
-            itemsFragments.get(0).getAdapter().clear();
-            itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format));
-            itemsFragments.get(1).getAdapter().clear();
-            itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format));
+
         }
 
 
@@ -171,6 +175,17 @@ public class MainActivity extends AppCompatActivity {
 
     public SimpleDateFormat getFormat() {
         return format;
+    }
+
+    public void setTimeLapse(String timeLapse) {
+        this.timeLapse = timeLapse;
+    }
+
+    public void reloadItemsFragments() {
+        itemsFragments.get(0).getAdapter().clear();
+        itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format));
+        itemsFragments.get(1).getAdapter().clear();
+        itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format));
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {
