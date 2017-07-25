@@ -19,7 +19,9 @@ import com.ivanchug.moneytracker.items.BalanceResult;
 import com.ivanchug.moneytracker.items.Item;
 import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> expensesItems;
     private ArrayList<Item> incomeItems;
 
-    private int menuItemSelected = 3;
+    private String timeLapse;
+    private SimpleDateFormat format;
 
 
 
@@ -47,8 +50,12 @@ public class MainActivity extends AppCompatActivity {
         tabs = (TabLayout) findViewById(R.id.tabs);
         pages = (ViewPager) findViewById(R.id.pages);
 
+        Date currentDate = new Date();
+        format = new SimpleDateFormat("MM.yyyy");
+        timeLapse = format.format(currentDate);
+
         if (savedInstanceState != null)
-            menuItemSelected = savedInstanceState.getInt("menuItemSelected");
+            timeLapse = savedInstanceState.getString("timeLapse");
     }
 
     @Override
@@ -59,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("menuItemSelected", menuItemSelected);
+        outState.putString("timeLapse", timeLapse);
     }
 
 
@@ -82,23 +89,28 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(CategoriesActivity.ARG_TYPE, itemFragmentType);
             startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {
-
+            Date date = null;
             switch (itemId) {
                 case R.id.time_lapse_month:
-                    menuItemSelected = 1;
+                    format = new SimpleDateFormat("MM.yyyy");
+                    date = new Date();
+                    timeLapse = format.format(date);
                     break;
                 case R.id.time_lapse_year:
-                    menuItemSelected = 2;
+                    format = new SimpleDateFormat("yyyy");
+                    date = new Date();
+                    timeLapse = format.format(date);
                     break;
                 case R.id.time_lapse_all:
-                    menuItemSelected = 3;
+                    timeLapse = null;
                     break;
 
             }
+
             itemsFragments.get(0).getAdapter().clear();
-            itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, menuItemSelected, this));
+            itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format));
             itemsFragments.get(1).getAdapter().clear();
-            itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, menuItemSelected, this));
+            itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format));
         }
 
 
@@ -153,8 +165,12 @@ public class MainActivity extends AppCompatActivity {
         ;
     }
 
-    public int getMenuItemSelected() {
-        return menuItemSelected;
+    public String getTimeLapse() {
+        return timeLapse;
+    }
+
+    public SimpleDateFormat getFormat() {
+        return format;
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {

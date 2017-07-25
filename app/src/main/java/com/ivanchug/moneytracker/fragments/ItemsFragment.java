@@ -31,6 +31,7 @@ import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
 import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -175,12 +176,12 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems(((MainActivity) getActivity()).getMenuItemSelected());
+                loadItems(((MainActivity) getActivity()).getTimeLapse(), ((MainActivity) getActivity()).getFormat());
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems(((MainActivity) getActivity()).getMenuItemSelected());
+        loadItems(((MainActivity) getActivity()).getTimeLapse(), ((MainActivity) getActivity()).getFormat());
     }
 
 
@@ -201,7 +202,7 @@ public class ItemsFragment extends Fragment {
         return adapter;
     }
 
-    void loadItems(final int menuItemSelected) {
+    void loadItems(final String timeLapse, final SimpleDateFormat format) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
         if (type.equals(Item.TYPE_INCOME))
             loaderId = LOADER_ITEMS_INCOME;
@@ -230,7 +231,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, menuItemSelected, getContext()));
+                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, timeLapse, getContext(), format));
                     ((MainActivity) getActivity()).setAllItems(data, type);
                 }
             }
