@@ -26,6 +26,11 @@
                 android:title="@string/time_lapse_all"
                 android:orderInCategory="30"
                 app:showAsAction="never" />
+            <item
+                android:id="@+id/choose_time_lapse"
+                android:title="@string/choose_time_lapse"
+                android:orderInCategory="40"
+                app:showAsAction="never" />
         </menu>
     </item>
 

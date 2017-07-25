@@ -5,19 +5,50 @@
     tools:context="com.ivanchug.moneytracker.MainActivity"
     style="@style/AppBackground">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/items"
+        <LinearLayout
+            android:id="@+id/date_panel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/margin_small"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content">
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <Spinner
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/set_time_lapse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/margin_small"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
 
 
     <android.support.design.widget.FloatingActionButton

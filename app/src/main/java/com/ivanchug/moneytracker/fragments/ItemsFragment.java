@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.AddActivity;
@@ -31,7 +33,13 @@ import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
 import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,8 +56,19 @@ public class ItemsFragment extends Fragment {
     public static final String ARG_TYPE = "type";
     private ItemsAdapter adapter;
 
+    private ArrayAdapter<String> monthsAdapter;
+    private ArrayAdapter<String> yearsAdapter;
+
+
     private String type;
     private View add;
+    private View datePanel;
+    private Spinner month;
+    private Spinner year;
+    private View chooseTimeLapse;
+
+    private static List<String> months = new ArrayList<>();
+    private static List<String> years = new ArrayList<>();
 
 
 
@@ -128,6 +147,22 @@ public class ItemsFragment extends Fragment {
 
         type = getArguments().getString(ARG_TYPE);
         add = view.findViewById(R.id.add_flbutton);
+        datePanel = view.findViewById(R.id.date_panel);
+        setDatePanelVisible(false);
+        month = (Spinner) view.findViewById(R.id.month);
+        year = (Spinner) view.findViewById(R.id.year);
+        chooseTimeLapse = view.findViewById(R.id.set_time_lapse);
+
+        monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
+        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        month.setAdapter(monthsAdapter);
+
+
+        yearsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years);
+        yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        year.setAdapter(yearsAdapter);
+
+
 
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
 
@@ -164,10 +199,18 @@ public class ItemsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final Intent intent = new Intent(getActivity(), AddActivity.class);
                 intent.putExtra(AddActivity.EXTRA_TYPE, type);
                 startActivityForResult(intent, AddActivity.RC_ADD_ITEM);
+            }
+        });
+
+        chooseTimeLapse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).setTimeLapse(getSelectedTimeLapse());
+                ((MainActivity) getActivity()).reloadItemsFragments();
+                setDatePanelVisible(false);
             }
         });
 
@@ -175,12 +218,13 @@ public class ItemsFragment extends Fragment {
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadItems(((MainActivity) getActivity()).getMenuItemSelected());
+                loadItems(((MainActivity) getActivity()).getTimeLapse(), ((MainActivity) getActivity()).getFormat());
                 refresh.setRefreshing(false);
             }
         });
 
-        loadItems(((MainActivity) getActivity()).getMenuItemSelected());
+        loadItems(((MainActivity) getActivity()).getTimeLapse(), ((MainActivity) getActivity()).getFormat());
+
     }
 
 
@@ -188,6 +232,11 @@ public class ItemsFragment extends Fragment {
         adapter.toggleSelection(items.getChildLayoutPosition(items.findChildViewUnder(e.getX(), e.getY())));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDatePanelVisible(false);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,7 +250,62 @@ public class ItemsFragment extends Fragment {
         return adapter;
     }
 
-    void loadItems(final int menuItemSelected) {
+    public String getSelectedTimeLapse() {
+        return String.valueOf(month.getSelectedItem() + "." + year.getSelectedItem());
+    }
+
+    public void setDatePanelVisible(boolean visible) {
+        if (visible) {
+            datePanel.setVisibility(View.VISIBLE);
+        } else
+            datePanel.setVisibility(View.GONE);
+
+    }
+
+    private void fillMonthsAndYears(List<Item> items) {
+
+        SimpleDateFormat month = new SimpleDateFormat("MM");
+        SimpleDateFormat year = new SimpleDateFormat("yyyy");
+        Set<String> monthsSet = new TreeSet<>();
+        Set<String> yearsSet = new TreeSet<>(Collections.<String>reverseOrder());
+
+        monthsSet.add(month.format(new Date()));
+        yearsSet.add(year.format(new Date()));
+        for (Item i : items) {
+            Date date = i.getDate();
+            if (monthsSet.size() < 12)
+                monthsSet.add(month.format(date));
+
+            yearsSet.add(year.format(date));
+        }
+        for (String m : monthsSet) {
+            if (!months.contains(m))
+                months.add(m);
+        }
+
+        for (String y : yearsSet) {
+            if (!years.contains(y))
+                years.add(y);
+        }
+        //updateSpinners();
+        monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
+        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.month.setAdapter(monthsAdapter);
+
+
+        yearsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years);
+        yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.year.setAdapter(yearsAdapter);
+    }
+
+    private void updateSpinners() {
+        monthsAdapter.clear();
+        monthsAdapter.addAll(months);
+        yearsAdapter.clear();
+        yearsAdapter.addAll(years);
+    }
+
+    void loadItems(final String timeLapse, final SimpleDateFormat format) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
         if (type.equals(Item.TYPE_INCOME))
             loaderId = LOADER_ITEMS_INCOME;
@@ -230,8 +334,9 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, menuItemSelected, getContext()));
+                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, timeLapse, getContext(), format));
                     ((MainActivity) getActivity()).setAllItems(data, type);
+                    fillMonthsAndYears(data);
                 }
             }
 

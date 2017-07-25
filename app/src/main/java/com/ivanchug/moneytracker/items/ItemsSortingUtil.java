@@ -7,7 +7,6 @@ import com.ivanchug.moneytracker.MainActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -43,23 +42,16 @@ public class ItemsSortingUtil {
         return result;
     }
 
-    public static List<Item> sortByTimeLapse(List<Item> items, int menuItemSelected) {
-        if (menuItemSelected == 3 || items == null || items.isEmpty())
+    public static List<Item> sortByTimeLapse(List<Item> items, String timeLapse, SimpleDateFormat format) {
+        if (timeLapse == null || items == null || items.isEmpty())
             return items;
         List<Item> result = new ArrayList<>();
-        SimpleDateFormat format = null;
-        Date currentDate = new Date();
-        if (menuItemSelected == 1)
-            format = new SimpleDateFormat("MM.yyyy");
-        else
-            format = new SimpleDateFormat("yyyy");
-        String formattedDate = format.format(currentDate);
 
         for (Item item : items) {
-            if (formattedDate.equals(format.format(item.getDate())))
+            String date = format.format(item.getDate());
+            if (timeLapse.equals(date))
                 result.add(item);
-            else
-                break;
+
         }
 
         return result;
@@ -78,8 +70,8 @@ public class ItemsSortingUtil {
         return itemsToShow;
     }
 
-    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, int menuItemSelected, Context context) {
-        List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, menuItemSelected);
+    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, String timeLapse, Context context, SimpleDateFormat format) {
+        List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, timeLapse, format);
 
         int totalAmount = 0;
 
