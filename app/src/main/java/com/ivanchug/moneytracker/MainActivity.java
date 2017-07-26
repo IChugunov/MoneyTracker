@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTimeLapse(String timeLapse) {
-        if (timeLapse.length() == 4)
-            format = new SimpleDateFormat("yyyy");
+        if (timeLapse.length() == 5)
+            format = new SimpleDateFormat(".yyyy");
         else if (timeLapse.length() == 7)
             format = new SimpleDateFormat("MM.yyyy");
         else if (timeLapse.length() == 8)
@@ -213,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void reloadItemsFragments() {
         itemsFragments.get(0).getAdapter().clear();
-        itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format));
+        itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format, Item.TYPE_EXPENSE));
         itemsFragments.get(1).getAdapter().clear();
-        itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format));
+        itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format, Item.TYPE_INCOME));
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {

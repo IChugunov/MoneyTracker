@@ -381,7 +381,7 @@ public class ItemsFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.clear();
-                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, timeLapse, getContext(), format));
+                    adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, timeLapse, getContext(), format, type));
                     ((MainActivity) getActivity()).setAllItems(data, type);
                     fillMonthsAndYears(data);
                 }

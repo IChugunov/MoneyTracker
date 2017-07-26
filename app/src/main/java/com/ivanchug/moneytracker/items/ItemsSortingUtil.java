@@ -73,7 +73,9 @@ public class ItemsSortingUtil {
         return itemsToShow;
     }
 
-    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, String timeLapse, Context context, SimpleDateFormat format) {
+    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, String timeLapse, Context context, SimpleDateFormat format, String type) {
+
+
         List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, timeLapse, format);
 
         int totalAmount = 0;
@@ -82,8 +84,9 @@ public class ItemsSortingUtil {
             for (Item item : itemsSortedByTimeLapse) {
                 totalAmount += item.getPrice();
             }
-            ((MainActivity) context).setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
         }
+
+        ((MainActivity) context).setTotals(totalAmount, type);
 
         TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsSortedByTimeLapse);
 
