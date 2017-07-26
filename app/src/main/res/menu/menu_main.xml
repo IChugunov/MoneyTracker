@@ -12,6 +12,11 @@
         app:showAsAction="ifRoom">
         <menu>
             <item
+                android:id="@+id/time_lapse_day"
+                android:title="@string/time_lapse_day"
+                android:orderInCategory="5"
+                app:showAsAction="never" />
+            <item
                 android:id="@+id/time_lapse_month"
                 android:title="@string/time_lapse_month"
                 android:orderInCategory="10"

@@ -91,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId != R.id.action_choose_time_lapse) {
             Date date = null;
             switch (itemId) {
+                case R.id.time_lapse_day:
+                    format = new SimpleDateFormat("dd.MM.yyyy");
+                    date = new Date();
+                    timeLapse = format.format(date);
+                    reloadItemsFragments();
+                    break;
                 case R.id.time_lapse_month:
                     format = new SimpleDateFormat("MM.yyyy");
                     date = new Date();
@@ -135,6 +141,24 @@ public class MainActivity extends AppCompatActivity {
 
         pages.setAdapter(new MainPagerAdapter());
         tabs.setupWithViewPager(pages);
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                for (ItemsFragment f : itemsFragments) {
+                    f.setDatePanelVisible(false);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     public int getTotals(String type) {
@@ -175,6 +199,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setTimeLapse(String timeLapse) {
+        if (timeLapse.length() == 4)
+            format = new SimpleDateFormat("yyyy");
+        else if (timeLapse.length() == 7)
+            format = new SimpleDateFormat("MM.yyyy");
+        else if (timeLapse.length() == 8)
+            format = new SimpleDateFormat("dd..yyyy");
+        else
+            format = new SimpleDateFormat("dd.MM.yyyy");
+
         this.timeLapse = timeLapse;
     }
 

@@ -16,6 +16,7 @@
     <string name="your_balance">ваш баланс\n за выбранный период</string>
     <string name="price">%1$d Р</string>
     <string name="action_choose_time_lapse">Выберите период</string>
+    <string name="time_lapse_day">День</string>
     <string name="time_lapse_month">Месяц</string>
     <string name="time_lapse_year">Год</string>
     <string name="time_lapse_all">Все</string>

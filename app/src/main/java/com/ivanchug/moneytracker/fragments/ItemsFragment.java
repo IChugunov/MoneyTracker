@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +25,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -59,13 +63,13 @@ public class ItemsFragment extends Fragment {
     private ArrayAdapter<String> monthsAdapter;
     private ArrayAdapter<String> yearsAdapter;
 
-
+    private EditText day;
     private String type;
     private View add;
     private View datePanel;
     private Spinner month;
     private Spinner year;
-    private View chooseTimeLapse;
+    private View setTimeLapse;
 
     private static volatile List<String> months = new ArrayList<>();
     private static volatile List<String> years = new ArrayList<>();
@@ -151,7 +155,9 @@ public class ItemsFragment extends Fragment {
         setDatePanelVisible(false);
         month = (Spinner) view.findViewById(R.id.month);
         year = (Spinner) view.findViewById(R.id.year);
-        chooseTimeLapse = view.findViewById(R.id.set_time_lapse);
+        day = (EditText) view.findViewById(R.id.day);
+        setTimeLapse = view.findViewById(R.id.set_time_lapse);
+
 
         monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
         monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -162,7 +168,31 @@ public class ItemsFragment extends Fragment {
         yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year.setAdapter(yearsAdapter);
 
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if (TextUtils.isEmpty(month.getSelectedItem().toString()))
+                //   setTimeLapse.setEnabled(TextUtils.isEmpty(day.getText().toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String selectedDay = day.getText().toString();
+                try {
+                    if (Integer.parseInt(selectedDay) > 31)
+                        day.setText("31");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        day.addTextChangedListener(textWatcher);
 
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
 
@@ -205,11 +235,12 @@ public class ItemsFragment extends Fragment {
             }
         });
 
-        chooseTimeLapse.setOnClickListener(new View.OnClickListener() {
+        setTimeLapse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).setTimeLapse(getSelectedTimeLapse());
                 ((MainActivity) getActivity()).reloadItemsFragments();
+                day.setText("");
                 setDatePanelVisible(false);
             }
         });
@@ -251,7 +282,26 @@ public class ItemsFragment extends Fragment {
     }
 
     public String getSelectedTimeLapse() {
-        return String.valueOf(month.getSelectedItem() + "." + year.getSelectedItem());
+        StringBuilder result = new StringBuilder();
+        String selectedDay = day.getText().toString();
+        String selectedMonth = month.getSelectedItem().toString();
+
+        if (!TextUtils.isEmpty(selectedDay)) {
+            if (selectedDay.length() == 1)
+                selectedDay = "0" + selectedDay;
+
+            result.append(selectedDay).append(".");
+        }
+
+        if (!TextUtils.isEmpty(selectedMonth))
+            result.append(selectedMonth).append(".");
+        else
+            result.append(".");
+
+        result.append(year.getSelectedItem().toString());
+
+
+        return result.toString();
     }
 
     public void setDatePanelVisible(boolean visible) {
@@ -268,6 +318,9 @@ public class ItemsFragment extends Fragment {
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
         Set<String> monthsSet = new TreeSet<>();
         Set<String> yearsSet = new TreeSet<>(Collections.<String>reverseOrder());
+
+        if (!months.contains(""))
+            months.add("");
 
         monthsSet.add(month.format(new Date()));
         yearsSet.add(year.format(new Date()));
