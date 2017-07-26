@@ -61,7 +61,10 @@ public class ItemsSortingUtil {
         List<AbstractItem> itemsToShow = new ArrayList<>();
 
         for (String date : items.keySet()) {
-            HeaderItem header = new HeaderItem(date);
+            String[] splitDate = date.split("\\.");
+            StringBuilder builder = new StringBuilder();
+            builder.append(splitDate[2]).append(".").append(splitDate[1]).append(".").append(splitDate[0]);
+            HeaderItem header = new HeaderItem(builder.toString());
             itemsToShow.add(header);
             for (Item item : items.get(date)) {
                 itemsToShow.add(item);

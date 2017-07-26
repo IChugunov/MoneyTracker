@@ -67,8 +67,8 @@ public class ItemsFragment extends Fragment {
     private Spinner year;
     private View chooseTimeLapse;
 
-    private static List<String> months = new ArrayList<>();
-    private static List<String> years = new ArrayList<>();
+    private static volatile List<String> months = new ArrayList<>();
+    private static volatile List<String> years = new ArrayList<>();
 
 
 
@@ -262,7 +262,7 @@ public class ItemsFragment extends Fragment {
 
     }
 
-    private void fillMonthsAndYears(List<Item> items) {
+    private synchronized void fillMonthsAndYears(List<Item> items) {
 
         SimpleDateFormat month = new SimpleDateFormat("MM");
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
@@ -287,7 +287,7 @@ public class ItemsFragment extends Fragment {
             if (!years.contains(y))
                 years.add(y);
         }
-        //updateSpinners();
+
         monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
         monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.month.setAdapter(monthsAdapter);
@@ -298,12 +298,6 @@ public class ItemsFragment extends Fragment {
         this.year.setAdapter(yearsAdapter);
     }
 
-    private void updateSpinners() {
-        monthsAdapter.clear();
-        monthsAdapter.addAll(months);
-        yearsAdapter.clear();
-        yearsAdapter.addAll(years);
-    }
 
     void loadItems(final String timeLapse, final SimpleDateFormat format) {
         Integer loaderId = LOADER_ITEMS_EXPENSE;
