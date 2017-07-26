@@ -37,7 +37,6 @@ public class AddActivity extends AppCompatActivity {
     private String category;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
-    private View newCategoryButton;
     private EditText newCategoryName;
     private TextView addCategory;
     private EditText name;
@@ -58,8 +57,6 @@ public class AddActivity extends AppCompatActivity {
 
         category = baseCategory;
 
-
-        newCategoryButton = findViewById(R.id.new_category_button);
         newCategoryName = (EditText) findViewById(R.id.new_category_name);
         addCategory = (TextView) findViewById(R.id.add_category);
         addCategoryLayout = findViewById(R.id.new_category_layout);
@@ -96,16 +93,6 @@ public class AddActivity extends AppCompatActivity {
         amount.addTextChangedListener(textWatcher);
         newCategoryName.addTextChangedListener(textWatcher);
 
-        newCategoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (addCategoryLayout.getVisibility() == View.GONE)
-                    addCategoryLayout.setVisibility(View.VISIBLE);
-                else
-                    addCategoryLayout.setVisibility(View.GONE);
-
-            }
-        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +132,7 @@ public class AddActivity extends AppCompatActivity {
             case R.id.menu_remove:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.money_tracker)
-                        .setMessage(R.string.confirm_remove)
+                        .setMessage(R.string.confirm_remove_category)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -180,7 +167,12 @@ public class AddActivity extends AppCompatActivity {
         remove.setVisible(!category.equals(baseCategory));
     }
 
-
+    public void openNewCategoryLayout() {
+        if (addCategoryLayout.getVisibility() == View.GONE)
+            addCategoryLayout.setVisibility(View.VISIBLE);
+        else
+            addCategoryLayout.setVisibility(View.GONE);
+    }
 
     @Override
     protected void onResume() {
@@ -192,7 +184,7 @@ public class AddActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    void loadCategories() {
+    private void loadCategories() {
         getSupportLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<String>>() {
             @Override
             public Loader<List<String>> onCreateLoader(int id, Bundle args) {

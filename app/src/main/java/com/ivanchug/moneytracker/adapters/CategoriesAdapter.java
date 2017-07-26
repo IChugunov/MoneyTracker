@@ -56,8 +56,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
     public void addAll(List<String> categories) {
-        if (context instanceof AddActivity)
+        if (context instanceof AddActivity) {
             categories.remove(categories.size() - 1);
+            categories.add(context.getString(R.string.add_new_category));
+        }
+
         this.categories.addAll(categories);
         notifyDataSetChanged();
     }
@@ -96,11 +99,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                 String category = categoryName.getText().toString();
                 AddActivity addActivity = (AddActivity) context;
 
-                if (!addActivity.getCategory().equals(category)) {
+                if (category.equals(addActivity.getString(R.string.add_new_category)))
+                    addActivity.openNewCategoryLayout();
+                else if (!addActivity.getCategory().equals(category)) {
                     addActivity.setCategory(category);
                     v.setBackgroundResource(R.color.backgroundColor);
                     if (previousView != null)
-                        previousView.setBackgroundResource(R.color.colorExpense);
+                        previousView.setBackgroundResource(R.color.colorLightBlueGrey);
                     previousView = v;
                     selectedCategoryPosition = getAdapterPosition();
                     addActivity.setRemoveState();

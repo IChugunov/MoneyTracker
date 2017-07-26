@@ -109,9 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.choose_time_lapse:
                     itemsFragments.get(tabs.getSelectedTabPosition()).setDatePanelVisible(true);
-                    //timeLapse = itemsFragments.get(tabs.getSelectedTabPosition()).getSelectedTimeLapse();
-                    //format = new SimpleDateFormat("MM.yyyy");
-
             }
 
 

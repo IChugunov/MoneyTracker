@@ -28,6 +28,9 @@
     <string name="expenses_base_category">Без категории расходы</string>
     <string name="income_base_category">Без категории доходы</string>
     <string name="choose_time_lapse">Выбрать период</string>
+    <string name="confirm_remove_category">Удалить выбранную категорию?</string>
+    <string name="add_new_category">Добавить новую категорию</string>
+    <string name="category_name">Название категории</string>
 
     <array name="main_pager_titles">
         <item>@string/expenses</item>

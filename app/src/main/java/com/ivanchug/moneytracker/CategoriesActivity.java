@@ -2,7 +2,6 @@ package com.ivanchug.moneytracker;
 
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -33,7 +32,6 @@ public class CategoriesActivity extends AppCompatActivity {
         CategoriesFragment categoriesFragment = new CategoriesFragment();
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.categories_fragment_container, categoriesFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
 

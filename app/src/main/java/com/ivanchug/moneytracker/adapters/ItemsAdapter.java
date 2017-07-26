@@ -23,7 +23,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private Context context;
-    private SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
+    private SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
 
 
     public ItemsAdapter(Context context) {
