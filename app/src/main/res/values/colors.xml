@@ -9,8 +9,8 @@
     <color name="colorShadow">#20000000</color>
     <color name="colorLightYellow">#f6f69d</color>
     <color name="colorLightBlueGrey">#dbece6</color>
-    <color name="colorItem">#fcc31e</color>
-    <color name="colorItemSelected">#985305</color>
+    <color name="colorItem">#f9cf55</color>
+    <color name="colorItemSelected">#ae630e</color>
     <color name="colorExpense">#f86c3f</color>
     <color name="colorComment">#95989a</color>
 </resources>
