@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.ivanchug.moneytracker.AddActivity;
 import com.ivanchug.moneytracker.CategoriesActivity;
 import com.ivanchug.moneytracker.R;
 import com.ivanchug.moneytracker.fragments.SimpleItemsFragment;
+import com.ivanchug.moneytracker.items.AbstractItem;
+import com.ivanchug.moneytracker.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         final String category = categories.get(position);
         holder.categoryName.setText(category);
+        if (context instanceof AddActivity) {
+            holder.categoryName.setGravity(Gravity.CENTER);
+            holder.itemsCount.setVisibility(View.GONE);
+        } else {
+            int count = 0;
+            for (AbstractItem i : ((CategoriesActivity) context).getItemsToShow()) {
+                if (i instanceof Item && ((Item) i).getCategory().equals(category))
+                    count++;
+            }
+            holder.itemsCount.setText(String.valueOf(count));
+        }
 
 
     }
@@ -84,11 +98,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView categoryName;
+        private final TextView itemsCount;
 
         public CategoryViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             categoryName = (TextView) itemView.findViewById(R.id.category_name);
+            itemsCount = (TextView) itemView.findViewById(R.id.items_count);
 
         }
 
