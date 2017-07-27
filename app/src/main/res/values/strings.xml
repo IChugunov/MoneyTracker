@@ -29,8 +29,8 @@
     <string name="categories">Категории</string>
     <string name="choose_category">Выберите категорию</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="expenses_base_category">Без категории расходы</string>
-    <string name="income_base_category">Без категории доходы</string>
+    <string name="expenses_base_category">Расходы без категории</string>
+    <string name="income_base_category">Доходы без категории</string>
     <string name="choose_time_lapse">Выбрать период</string>
     <string name="confirm_remove_category">Удалить выбранную категорию?</string>
     <string name="add_new_category">Добавить новую категорию</string>
