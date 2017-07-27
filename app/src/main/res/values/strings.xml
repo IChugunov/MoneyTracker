@@ -5,8 +5,11 @@
     <string name="amount_hint">0</string>
     <string name="rouble">Р</string>
     <string name="expenses">расходы</string>
+    <string name="expenses_title">Расходы</string>
     <string name="incomes">доходы</string>
+    <string name="incomes_title">Доходы</string>
     <string name="balance">Баланс</string>
+    <string name="period">" за период"</string>
     <string name="error">Произошла ошибка</string>
     <string name="money_tracker">Учет бюджета</string>
     <string name="add_item">Новая запись</string>
