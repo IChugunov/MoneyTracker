@@ -213,7 +213,7 @@ public class ItemsFragment extends Fragment {
                     actionMode.setTitle(adapter.getSelectedItems().size() + " " + getString(R.string.items_selected));
                 }
 
-
+                setDatePanelVisible(false);
                 return super.onSingleTapConfirmed(e);
             }
         });
@@ -421,8 +421,8 @@ public class ItemsFragment extends Fragment {
                 if (data == null) {
                     Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
+                    ((MainActivity) getActivity()).getAllItems(type).add(item);
                     adapter.add(item);
-                    ((MainActivity) getActivity()).getAllItems(type).add(0, item);
                     items.smoothScrollToPosition(0);
                 }
             }

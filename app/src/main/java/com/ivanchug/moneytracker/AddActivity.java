@@ -159,7 +159,7 @@ public class AddActivity extends AppCompatActivity {
                 if (selectedDay.length() == 1)
                     selectedDay = "0" + selectedDay;
                 if (selectedMonth.length() == 1)
-                    selectedMonth = "0" + selectedDay;
+                    selectedMonth = "0" + selectedMonth;
                 SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                 String result = new StringBuilder().append(selectedDay).append(".").append(selectedMonth).append(".").append(selectedYear).toString();
                 try {

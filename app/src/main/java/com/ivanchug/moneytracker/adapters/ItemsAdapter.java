@@ -16,6 +16,7 @@ import com.ivanchug.moneytracker.items.Item;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
@@ -23,7 +24,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     private List<AbstractItem> itemsToShow = new ArrayList<>();
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private Context context;
-    private SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
+
 
 
     public ItemsAdapter(Context context) {
@@ -66,19 +67,27 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     }
 
     public void add(Item item) {
+
+        SimpleDateFormat formater = new SimpleDateFormat("dd.MM.yyyy");
         String date = formater.format(item.getDate());
-        if (itemsToShow.isEmpty() || !((HeaderItem) itemsToShow.get(0)).getDate().equals(date)) {
-            itemsToShow.add(0, new HeaderItem(date));
-            notifyItemInserted(0);
+        String currentDate = formater.format(new Date());
+        if (date.equals(currentDate)) {
+            if (itemsToShow.isEmpty() || !((HeaderItem) itemsToShow.get(0)).getDate().equals(date)) {
+                itemsToShow.add(0, new HeaderItem(date));
+                notifyItemInserted(0);
+            }
+
+            itemsToShow.add(1, item);
+            notifyItemInserted(1);
+            String type = item.getType();
+            int newTotal = ((MainActivity) context).getTotals(type) + item.getPrice();
+            ((MainActivity) context).setTotals(newTotal, type);
+        } else {
+            ((MainActivity) context).reloadItemsFragments();
         }
 
-        itemsToShow.add(1, item);
-        notifyItemInserted(1);
-        String type = item.getType();
-        int newTotal = ((MainActivity) context).getTotals(type) + item.getPrice();
-        ((MainActivity) context).setTotals(newTotal, type);
-    }
 
+    }
 
 
     public void addAll(List<AbstractItem> items) {
