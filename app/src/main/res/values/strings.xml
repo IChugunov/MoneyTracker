@@ -35,6 +35,10 @@
     <string name="confirm_remove_category">Удалить выбранную категорию?</string>
     <string name="add_new_category">Добавить новую категорию</string>
     <string name="category_name">Название категории</string>
+    <string name="day">день:</string>
+    <string name="month">месяц:</string>
+    <string name="year">год:</string>
+    <string name="set_date">Установить дату</string>
 
     <array name="main_pager_titles">
         <item>@string/expenses</item>

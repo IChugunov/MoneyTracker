@@ -24,6 +24,7 @@ import com.ivanchug.moneytracker.adapters.CategoriesAdapter;
 import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
 
+import java.util.Date;
 import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
@@ -35,6 +36,7 @@ public class AddActivity extends AppCompatActivity {
     private String type;
     private String baseCategory;
     private String category;
+    private Date date = new Date();
     private RecyclerView categories;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
@@ -44,6 +46,12 @@ public class AddActivity extends AppCompatActivity {
     private EditText amount;
     private TextView add;
     private MenuItem remove;
+    private EditText day;
+    private EditText month;
+    private EditText year;
+    private View setDateLayout;
+    private View setDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,13 @@ public class AddActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.add_name);
         amount = (EditText) findViewById(R.id.add_amount);
         add = (TextView) findViewById(R.id.add);
+        setDateLayout = findViewById(R.id.set_date_layout);
+        setDateLayout.setVisibility(View.GONE);
+        day = (EditText) findViewById(R.id.set_day);
+        month = (EditText) findViewById(R.id.set_month);
+        year = (EditText) findViewById(R.id.set_year);
+        setDate = findViewById(R.id.set_date);
+        setDate.setEnabled(false);
 
         categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
         adapter = new CategoriesAdapter(this);
@@ -82,24 +97,44 @@ public class AddActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*"));
                 addCategory.setEnabled(!TextUtils.isEmpty(newCategoryName.getText()));
+                boolean dayIsOk = !TextUtils.isEmpty(day.getText()) && !day.getText().toString().matches("[0]*");
+                boolean monthIsOk = !TextUtils.isEmpty(month.getText()) && !month.getText().toString().matches("[0]*");
+                boolean yearIsOk = !TextUtils.isEmpty(year.getText()) && !year.getText().toString().matches("[0]*") && year.getText().toString().length() == 4;
+                setDate.setEnabled(dayIsOk && monthIsOk && yearIsOk);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                String selectedDay = day.getText().toString();
+                String selectedMonth = month.getText().toString();
+                try {
+                    if (Integer.parseInt(selectedDay) > 31)
+                        day.setText("31");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (Integer.parseInt(selectedMonth) > 12)
+                        month.setText("12");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         };
 
         name.addTextChangedListener(textWatcher);
         amount.addTextChangedListener(textWatcher);
         newCategoryName.addTextChangedListener(textWatcher);
+        day.addTextChangedListener(textWatcher);
+        month.addTextChangedListener(textWatcher);
+        year.addTextChangedListener(textWatcher);
 
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent result = new Intent();
-                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this, category));
+                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this, category, date));
                 setResult(RESULT_OK, result);
                 finish();
             }
@@ -118,7 +153,7 @@ public class AddActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.remove_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_add, menu);
         remove = menu.getItem(0);
         setRemoveState();
         return super.onCreateOptionsMenu(menu);
@@ -150,6 +185,12 @@ public class AddActivity extends AppCompatActivity {
                         })
                         .setCancelable(false)
                         .show();
+                return true;
+            case R.id.menu_set_date:
+                if (setDateLayout.getVisibility() == View.GONE)
+                    setDateLayout.setVisibility(View.VISIBLE);
+                else
+                    setDateLayout.setVisibility(View.GONE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

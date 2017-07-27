@@ -67,6 +67,95 @@
 
     </android.support.v7.widget.CardView>
 
+    <LinearLayout
+        android:id="@+id/set_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingStart="@dimen/margin_l"
+        android:paddingEnd="@dimen/margin_l"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/day"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_day"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:gravity="end"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_month"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/year"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:gravity="end"
+            android:layout_weight="1"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_year"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="4"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/set_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:src="@drawable/time_lapse_ok" />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/date_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorShadow" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/categories_in_add_activity"
         android:layout_width="match_parent"
