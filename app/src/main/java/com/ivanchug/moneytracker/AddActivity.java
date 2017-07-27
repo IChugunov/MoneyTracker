@@ -35,6 +35,7 @@ public class AddActivity extends AppCompatActivity {
     private String type;
     private String baseCategory;
     private String category;
+    private RecyclerView categories;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
     private EditText newCategoryName;
@@ -65,7 +66,7 @@ public class AddActivity extends AppCompatActivity {
         amount = (EditText) findViewById(R.id.add_amount);
         add = (TextView) findViewById(R.id.add);
 
-        final RecyclerView categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
+        categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
         adapter = new CategoriesAdapter(this);
         categories.setAdapter(adapter);
         loadCategories();
@@ -245,6 +246,7 @@ public class AddActivity extends AppCompatActivity {
                     Toast.makeText(AddActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.add(data);
+                    categories.smoothScrollToPosition(0);
 
                 }
             }

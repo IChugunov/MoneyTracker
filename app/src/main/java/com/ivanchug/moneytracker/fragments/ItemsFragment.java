@@ -59,6 +59,7 @@ public class ItemsFragment extends Fragment {
 
     public static final String ARG_TYPE = "type";
     private ItemsAdapter adapter;
+    private RecyclerView items;
 
     private ArrayAdapter<String> monthsAdapter;
     private ArrayAdapter<String> yearsAdapter;
@@ -141,7 +142,7 @@ public class ItemsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final RecyclerView items = (RecyclerView) view.findViewById(R.id.items);
+        items = (RecyclerView) view.findViewById(R.id.items);
         adapter = new ItemsAdapter((MainActivity) getActivity());
         items.setAdapter(adapter);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -419,6 +420,7 @@ public class ItemsFragment extends Fragment {
                 } else {
                     adapter.add(item);
                     ((MainActivity) getActivity()).getAllItems(type).add(0, item);
+                    items.smoothScrollToPosition(0);
                 }
             }
 
