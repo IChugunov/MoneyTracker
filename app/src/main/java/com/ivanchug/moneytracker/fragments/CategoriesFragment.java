@@ -62,6 +62,12 @@ public class CategoriesFragment extends Fragment {
         loadCategories();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getActivity().getString(R.string.categories));
+    }
+
     void loadCategories() {
         getActivity().getSupportLoaderManager().restartLoader(LOADER_CATEGORIES, null, new LoaderManager.LoaderCallbacks<List<String>>() {
             @Override
