@@ -315,6 +315,9 @@ public class ItemsFragment extends Fragment {
 
     private synchronized void fillMonthsAndYears(List<Item> items) {
 
+        months.clear();
+        years.clear();
+
         SimpleDateFormat month = new SimpleDateFormat("MM");
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
         Set<String> monthsSet = new TreeSet<>();
