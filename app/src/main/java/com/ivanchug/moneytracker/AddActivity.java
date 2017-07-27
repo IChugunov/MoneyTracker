@@ -24,6 +24,7 @@ import com.ivanchug.moneytracker.adapters.CategoriesAdapter;
 import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -146,6 +147,28 @@ public class AddActivity extends AppCompatActivity {
                 addCategory(newCategoryName.getText().toString());
                 newCategoryName.setText("");
                 addCategoryLayout.setVisibility(View.GONE);
+            }
+        });
+
+        setDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedDay = day.getText().toString();
+                String selectedMonth = month.getText().toString();
+                String selectedYear = year.getText().toString();
+                if (selectedDay.length() == 1)
+                    selectedDay = "0" + selectedDay;
+                if (selectedMonth.length() == 1)
+                    selectedMonth = "0" + selectedDay;
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                String result = new StringBuilder().append(selectedDay).append(".").append(selectedMonth).append(".").append(selectedYear).toString();
+                try {
+                    date = format.parse(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                setDateLayout.setVisibility(View.GONE);
+
             }
         });
 
