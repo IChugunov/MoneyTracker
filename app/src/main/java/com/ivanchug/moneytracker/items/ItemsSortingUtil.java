@@ -20,24 +20,14 @@ public class ItemsSortingUtil {
         SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
         TreeMap<String, List<Item>> result = new TreeMap<>(Collections.reverseOrder());
 
-        if (items != null && items.size() > 0) {
-            List<Item> itemsForDate = new ArrayList<>();
-            String date = formater.format(items.get(0).getDate());
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
-                String dateToCompare = formater.format(item.getDate());
-                if (dateToCompare.equals(date)) {
-                    itemsForDate.add(item);
-                } else {
-                    result.put(date, itemsForDate);
-                    itemsForDate = new ArrayList<>();
-                    itemsForDate.add(item);
-                    date = dateToCompare;
-                }
+        for (Item i : items) {
+            String date = formater.format(i.getDate());
+            if (!result.containsKey(date)) {
+                result.put(date, new ArrayList<Item>());
             }
-            result.put(date, itemsForDate);
-        }
 
+            result.get(date).add(i);
+        }
 
         return result;
     }
