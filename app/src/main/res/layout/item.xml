@@ -19,7 +19,7 @@
         style="@style/TextWhite"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/amount_bg"
+        android:background="@color/amountBg"
         android:gravity="center_vertical"
         android:textStyle="bold" />
 

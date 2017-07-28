@@ -50,6 +50,6 @@ public class SimpleItemsFragment extends Fragment {
 
         adapter.addAll(ItemsSortingUtil.prepareItemsForSimpleItemsFragment(receivedItems, category));
 
-
+        getActivity().setTitle(category);
     }
 }

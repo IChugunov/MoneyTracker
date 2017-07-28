@@ -67,6 +67,97 @@
 
     </android.support.v7.widget.CardView>
 
+    <LinearLayout
+        android:id="@+id/set_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingStart="30dp"
+        android:paddingEnd="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/day"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:gravity="end"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_day"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:text="@string/month"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:gravity="end"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_month"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:text="@string/year"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/text_medium"
+            android:gravity="end"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/set_year"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:maxLength="4"
+            android:inputType="number"
+            android:layout_gravity="center_vertical" />
+
+        <ImageView
+            android:id="@+id/set_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/margin_small"
+            android:src="@drawable/time_lapse_ok" />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/date_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorShadow" />
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/categories_in_add_activity"
         android:layout_width="match_parent"
@@ -75,47 +166,52 @@
         android:padding="@dimen/margin_small"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-    <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorShadow" />
+
+    <android.support.v7.widget.CardView
         android:id="@+id/new_category_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:paddingStart="@dimen/margin_l"
-        android:paddingEnd="@dimen/margin_l">
+        app:elevation="4dp">
 
-        <EditText
-            android:id="@+id/new_category_name"
-            android:layout_width="@dimen/zero_size"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="@dimen/text_size"
-            android:maxLines="1"
-            android:inputType="text"
-            android:background="@android:color/transparent"
-            android:layout_gravity="center_vertical"
-            android:hint="введите имя" />
-
-
-        <TextView
-            android:id="@+id/add_category"
-            android:enabled="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="40sp"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
             android:paddingStart="@dimen/margin_l"
-            android:layout_gravity="center_vertical"
-            tools:ignore="HardcodedText" />
+            android:paddingEnd="@dimen/margin_l">
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/new_category_name"
+                android:layout_width="@dimen/zero_size"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size"
+                android:maxLines="1"
+                android:inputType="text"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/category_name" />
 
 
-    <TextView
-        android:id="@+id/new_category_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="новая категория"
-        android:textSize="40sp" />
+            <TextView
+                android:id="@+id/add_category"
+                android:enabled="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="40sp"
+                android:paddingStart="@dimen/margin_l"
+                android:layout_gravity="center_vertical"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
 
 </LinearLayout>

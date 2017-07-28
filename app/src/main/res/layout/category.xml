@@ -5,13 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_small"
-    android:background="@color/colorExpense">
+    android:background="@color/colorLightBlueGrey">
 
     <TextView
         android:id="@+id/category_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_weight="1"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
+        android:textSize="@dimen/text_large"
         tools:text="Категория" />
+
+    <TextView
+        android:id="@+id/items_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
+        android:textSize="@dimen/text_large"
+        tools:text=" 0" />
 
 </LinearLayout>

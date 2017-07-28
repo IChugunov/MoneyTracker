@@ -20,24 +20,14 @@ public class ItemsSortingUtil {
         SimpleDateFormat formater = new SimpleDateFormat("yyyy.MM.dd");
         TreeMap<String, List<Item>> result = new TreeMap<>(Collections.reverseOrder());
 
-        if (items != null && items.size() > 0) {
-            List<Item> itemsForDate = new ArrayList<>();
-            String date = formater.format(items.get(0).getDate());
-            for (int i = 0; i < items.size(); i++) {
-                Item item = items.get(i);
-                String dateToCompare = formater.format(item.getDate());
-                if (dateToCompare.equals(date)) {
-                    itemsForDate.add(item);
-                } else {
-                    result.put(date, itemsForDate);
-                    itemsForDate = new ArrayList<>();
-                    itemsForDate.add(item);
-                    date = dateToCompare;
-                }
+        for (Item i : items) {
+            String date = formater.format(i.getDate());
+            if (!result.containsKey(date)) {
+                result.put(date, new ArrayList<Item>());
             }
-            result.put(date, itemsForDate);
-        }
 
+            result.get(date).add(i);
+        }
 
         return result;
     }
@@ -61,7 +51,10 @@ public class ItemsSortingUtil {
         List<AbstractItem> itemsToShow = new ArrayList<>();
 
         for (String date : items.keySet()) {
-            HeaderItem header = new HeaderItem(date);
+            String[] splitDate = date.split("\\.");
+            StringBuilder builder = new StringBuilder();
+            builder.append(splitDate[2]).append(".").append(splitDate[1]).append(".").append(splitDate[0]);
+            HeaderItem header = new HeaderItem(builder.toString());
             itemsToShow.add(header);
             for (Item item : items.get(date)) {
                 itemsToShow.add(item);
@@ -70,7 +63,9 @@ public class ItemsSortingUtil {
         return itemsToShow;
     }
 
-    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, String timeLapse, Context context, SimpleDateFormat format) {
+    public static List<AbstractItem> prepareItemsForItemsFragment(List<Item> items, String timeLapse, Context context, SimpleDateFormat format, String type) {
+
+
         List<Item> itemsSortedByTimeLapse = ItemsSortingUtil.sortByTimeLapse(items, timeLapse, format);
 
         int totalAmount = 0;
@@ -79,8 +74,9 @@ public class ItemsSortingUtil {
             for (Item item : itemsSortedByTimeLapse) {
                 totalAmount += item.getPrice();
             }
-            ((MainActivity) context).setTotals(totalAmount, itemsSortedByTimeLapse.get(0).getType());
         }
+
+        ((MainActivity) context).setTotals(totalAmount, type);
 
         TreeMap<String, List<Item>> itemsDividedByDate = ItemsSortingUtil.divideByDate(itemsSortedByTimeLapse);
 

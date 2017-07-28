@@ -5,8 +5,11 @@
     <string name="amount_hint">0</string>
     <string name="rouble">Р</string>
     <string name="expenses">расходы</string>
+    <string name="expenses_title">Расходы</string>
     <string name="incomes">доходы</string>
+    <string name="incomes_title">Доходы</string>
     <string name="balance">Баланс</string>
+    <string name="period">" за период"</string>
     <string name="error">Произошла ошибка</string>
     <string name="money_tracker">Учет бюджета</string>
     <string name="add_item">Новая запись</string>
@@ -16,6 +19,7 @@
     <string name="your_balance">ваш баланс\n за выбранный период</string>
     <string name="price">%1$d Р</string>
     <string name="action_choose_time_lapse">Выберите период</string>
+    <string name="time_lapse_day">День</string>
     <string name="time_lapse_month">Месяц</string>
     <string name="time_lapse_year">Год</string>
     <string name="time_lapse_all">Все</string>
@@ -25,9 +29,18 @@
     <string name="categories">Категории</string>
     <string name="choose_category">Выберите категорию</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="expenses_base_category">Без категории расходы</string>
-    <string name="income_base_category">Без категории доходы</string>
+    <string name="expenses_base_category">Расходы без категории</string>
+    <string name="income_base_category">Доходы без категории</string>
     <string name="choose_time_lapse">Выбрать период</string>
+    <string name="confirm_remove_category">Удалить выбранную категорию?</string>
+    <string name="add_new_category">Добавить новую категорию</string>
+    <string name="category_name">Название категории</string>
+    <string name="day">день:</string>
+    <string name="month">месяц:</string>
+    <string name="year">год:</string>
+    <string name="set_date">Установить дату</string>
+    <string name="remove_category">Удалить категорию</string>
+    <string name="remove_elements">Удалить выбранные элементы</string>
 
     <array name="main_pager_titles">
         <item>@string/expenses</item>

@@ -3,16 +3,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorExpense"
-    android:layout_margin="@dimen/margin_small">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/margin_small"
+    android:padding="@dimen/margin_small">
 
 
     <TextView
         android:id="@+id/header_name"
-        style="@style/TextWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:textSize="@dimen/text_medium"
+        tools:text="26.02.1989" />
 
 </LinearLayout>

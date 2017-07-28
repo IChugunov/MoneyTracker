@@ -18,6 +18,7 @@ import com.ivanchug.moneytracker.CategoriesActivity;
 import com.ivanchug.moneytracker.R;
 import com.ivanchug.moneytracker.adapters.CategoriesAdapter;
 import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
+import com.ivanchug.moneytracker.items.Item;
 
 import java.util.List;
 
@@ -60,6 +61,20 @@ public class CategoriesFragment extends Fragment {
 
 
         loadCategories();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String title;
+        CategoriesActivity activity = (CategoriesActivity) getActivity();
+        if (activity.getType().equals(Item.TYPE_EXPENSE))
+            title = activity.getString(R.string.expenses_title);
+        else
+            title = activity.getString(R.string.incomes_title);
+
+        title = title + activity.getString(R.string.period);
+        getActivity().setTitle(title);
     }
 
     void loadCategories() {

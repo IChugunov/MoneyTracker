@@ -24,6 +24,8 @@ import com.ivanchug.moneytracker.adapters.CategoriesAdapter;
 import com.ivanchug.moneytracker.db.MoneyTrackerDbHelper;
 import com.ivanchug.moneytracker.items.Item;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AddActivity extends AppCompatActivity {
@@ -35,15 +37,22 @@ public class AddActivity extends AppCompatActivity {
     private String type;
     private String baseCategory;
     private String category;
+    private Date date = new Date();
+    private RecyclerView categories;
     private CategoriesAdapter adapter;
     private View addCategoryLayout;
-    private View newCategoryButton;
     private EditText newCategoryName;
     private TextView addCategory;
     private EditText name;
     private EditText amount;
     private TextView add;
     private MenuItem remove;
+    private EditText day;
+    private EditText month;
+    private EditText year;
+    private View setDateLayout;
+    private View setDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +67,6 @@ public class AddActivity extends AppCompatActivity {
 
         category = baseCategory;
 
-
-        newCategoryButton = findViewById(R.id.new_category_button);
         newCategoryName = (EditText) findViewById(R.id.new_category_name);
         addCategory = (TextView) findViewById(R.id.add_category);
         addCategoryLayout = findViewById(R.id.new_category_layout);
@@ -67,8 +74,15 @@ public class AddActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.add_name);
         amount = (EditText) findViewById(R.id.add_amount);
         add = (TextView) findViewById(R.id.add);
+        setDateLayout = findViewById(R.id.set_date_layout);
+        setDateLayout.setVisibility(View.GONE);
+        day = (EditText) findViewById(R.id.set_day);
+        month = (EditText) findViewById(R.id.set_month);
+        year = (EditText) findViewById(R.id.set_year);
+        setDate = findViewById(R.id.set_date);
+        setDate.setEnabled(false);
 
-        final RecyclerView categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
+        categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
         adapter = new CategoriesAdapter(this);
         categories.setAdapter(adapter);
         loadCategories();
@@ -84,34 +98,44 @@ public class AddActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 add.setEnabled(!TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(amount.getText()) && !amount.getText().toString().matches("[0]*"));
                 addCategory.setEnabled(!TextUtils.isEmpty(newCategoryName.getText()));
+                boolean dayIsOk = !TextUtils.isEmpty(day.getText()) && !day.getText().toString().matches("[0]*");
+                boolean monthIsOk = !TextUtils.isEmpty(month.getText()) && !month.getText().toString().matches("[0]*");
+                boolean yearIsOk = !TextUtils.isEmpty(year.getText()) && !year.getText().toString().matches("[0]*") && year.getText().toString().length() == 4;
+                setDate.setEnabled(dayIsOk && monthIsOk && yearIsOk);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                String selectedDay = day.getText().toString();
+                String selectedMonth = month.getText().toString();
+                try {
+                    if (Integer.parseInt(selectedDay) > 31)
+                        day.setText("31");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (Integer.parseInt(selectedMonth) > 12)
+                        month.setText("12");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         };
 
         name.addTextChangedListener(textWatcher);
         amount.addTextChangedListener(textWatcher);
         newCategoryName.addTextChangedListener(textWatcher);
+        day.addTextChangedListener(textWatcher);
+        month.addTextChangedListener(textWatcher);
+        year.addTextChangedListener(textWatcher);
 
-        newCategoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (addCategoryLayout.getVisibility() == View.GONE)
-                    addCategoryLayout.setVisibility(View.VISIBLE);
-                else
-                    addCategoryLayout.setVisibility(View.GONE);
-
-            }
-        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent result = new Intent();
-                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this, category));
+                result.putExtra(RESULT_ITEM, new Item(name.getText().toString(), Integer.valueOf(amount.getText().toString()), type, AddActivity.this, category, date));
                 setResult(RESULT_OK, result);
                 finish();
             }
@@ -126,11 +150,33 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+        setDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedDay = day.getText().toString();
+                String selectedMonth = month.getText().toString();
+                String selectedYear = year.getText().toString();
+                if (selectedDay.length() == 1)
+                    selectedDay = "0" + selectedDay;
+                if (selectedMonth.length() == 1)
+                    selectedMonth = "0" + selectedMonth;
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                String result = new StringBuilder().append(selectedDay).append(".").append(selectedMonth).append(".").append(selectedYear).toString();
+                try {
+                    date = format.parse(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                setDateLayout.setVisibility(View.GONE);
+
+            }
+        });
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.remove_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_add, menu);
         remove = menu.getItem(0);
         setRemoveState();
         return super.onCreateOptionsMenu(menu);
@@ -145,7 +191,7 @@ public class AddActivity extends AppCompatActivity {
             case R.id.menu_remove:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.money_tracker)
-                        .setMessage(R.string.confirm_remove)
+                        .setMessage(R.string.confirm_remove_category)
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -162,6 +208,12 @@ public class AddActivity extends AppCompatActivity {
                         })
                         .setCancelable(false)
                         .show();
+                return true;
+            case R.id.menu_set_date:
+                if (setDateLayout.getVisibility() == View.GONE)
+                    setDateLayout.setVisibility(View.VISIBLE);
+                else
+                    setDateLayout.setVisibility(View.GONE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -180,7 +232,12 @@ public class AddActivity extends AppCompatActivity {
         remove.setVisible(!category.equals(baseCategory));
     }
 
-
+    public void openNewCategoryLayout() {
+        if (addCategoryLayout.getVisibility() == View.GONE)
+            addCategoryLayout.setVisibility(View.VISIBLE);
+        else
+            addCategoryLayout.setVisibility(View.GONE);
+    }
 
     @Override
     protected void onResume() {
@@ -192,7 +249,7 @@ public class AddActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    void loadCategories() {
+    private void loadCategories() {
         getSupportLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<String>>() {
             @Override
             public Loader<List<String>> onCreateLoader(int id, Bundle args) {
@@ -253,6 +310,7 @@ public class AddActivity extends AppCompatActivity {
                     Toast.makeText(AddActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
                 } else {
                     adapter.add(data);
+                    categories.smoothScrollToPosition(0);
 
                 }
             }

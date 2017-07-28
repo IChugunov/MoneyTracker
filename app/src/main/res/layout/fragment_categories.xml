@@ -11,8 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/choose_category"
-        android:textSize="@dimen/text_large"
-        android:gravity="center" />
+        android:textSize="@dimen/text_size"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_l" />
 
 
     <android.support.v7.widget.RecyclerView
