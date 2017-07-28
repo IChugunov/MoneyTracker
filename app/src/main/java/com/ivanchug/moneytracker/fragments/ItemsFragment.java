@@ -204,6 +204,7 @@ public class ItemsFragment extends Fragment {
 
                 toggleSelection(e, items);
                 actionMode.setTitle(adapter.getSelectedItems().size() + " " + getString(R.string.items_selected));
+                setDatePanelVisible(false);
             }
 
             @Override

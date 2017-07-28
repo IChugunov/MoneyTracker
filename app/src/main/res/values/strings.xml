@@ -39,6 +39,8 @@
     <string name="month">месяц:</string>
     <string name="year">год:</string>
     <string name="set_date">Установить дату</string>
+    <string name="remove_category">Удалить категорию</string>
+    <string name="remove_elements">Удалить выбранные элементы</string>
 
     <array name="main_pager_titles">
         <item>@string/expenses</item>
