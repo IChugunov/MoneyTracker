@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item> incomeItems;
 
     private String timeLapse;
-    private SimpleDateFormat format;
+    private String pattern;
 
 
 
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         pages = (ViewPager) findViewById(R.id.pages);
 
         Date currentDate = new Date();
-        format = new SimpleDateFormat("MM.yyyy");
+        pattern = "MM.yyyy";
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
         timeLapse = format.format(currentDate);
 
         if (savedInstanceState != null)
@@ -89,22 +90,26 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(CategoriesActivity.ARG_TYPE, itemFragmentType);
             startActivity(intent);
         } else if (itemId != R.id.action_choose_time_lapse) {
-            Date date = null;
+            Date date;
+            SimpleDateFormat format;
             switch (itemId) {
                 case R.id.time_lapse_day:
-                    format = new SimpleDateFormat("dd.MM.yyyy");
+                    pattern = "dd.MM.yyyy";
+                    format = new SimpleDateFormat(pattern);
                     date = new Date();
                     timeLapse = format.format(date);
                     reloadItemsFragments();
                     break;
                 case R.id.time_lapse_month:
-                    format = new SimpleDateFormat("MM.yyyy");
+                    pattern = "MM.yyyy";
+                    format = new SimpleDateFormat(pattern);
                     date = new Date();
                     timeLapse = format.format(date);
                     reloadItemsFragments();
                     break;
                 case R.id.time_lapse_year:
-                    format = new SimpleDateFormat("yyyy");
+                    pattern = "yyyy";
+                    format = new SimpleDateFormat(pattern);
                     date = new Date();
                     timeLapse = format.format(date);
                     reloadItemsFragments();
@@ -195,27 +200,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public SimpleDateFormat getFormat() {
-        return format;
+        return new SimpleDateFormat(pattern);
     }
 
     public void setTimeLapse(String timeLapse) {
         if (timeLapse.length() == 5)
-            format = new SimpleDateFormat(".yyyy");
+            pattern = ".yyyy";
         else if (timeLapse.length() == 7)
-            format = new SimpleDateFormat("MM.yyyy");
+            pattern = "MM.yyyy";
         else if (timeLapse.length() == 8)
-            format = new SimpleDateFormat("dd..yyyy");
+            pattern = "dd..yyyy";
         else
-            format = new SimpleDateFormat("dd.MM.yyyy");
+            pattern = "dd.MM.yyyy";
 
         this.timeLapse = timeLapse;
     }
 
     public void reloadItemsFragments() {
         itemsFragments.get(0).getAdapter().clear();
-        itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, format, Item.TYPE_EXPENSE));
+        itemsFragments.get(0).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(expensesItems, timeLapse, this, new SimpleDateFormat(pattern), Item.TYPE_EXPENSE));
         itemsFragments.get(1).getAdapter().clear();
-        itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, format, Item.TYPE_INCOME));
+        itemsFragments.get(1).getAdapter().addAll(ItemsSortingUtil.prepareItemsForItemsFragment(incomeItems, timeLapse, this, new SimpleDateFormat(pattern), Item.TYPE_INCOME));
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {
