@@ -73,25 +73,26 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@android:color/white"
-        android:paddingStart="@dimen/margin_l"
-        android:paddingEnd="@dimen/margin_l"
+        android:paddingStart="30dp"
+        android:paddingEnd="@dimen/margin_small"
         android:paddingTop="@dimen/margin_small"
         android:paddingBottom="@dimen/margin_small">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/day"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_medium"
+            android:layout_marginEnd="@dimen/margin_small"
             android:gravity="end"
-            android:layout_weight="1"
             android:maxLines="1" />
 
         <EditText
             android:id="@+id/set_day"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
             android:background="@android:color/transparent"
             android:maxLines="1"
             android:maxLength="2"
@@ -101,6 +102,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/month"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_medium"
@@ -111,6 +113,7 @@
             android:id="@+id/set_month"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
             android:background="@android:color/transparent"
             android:maxLines="1"
             android:maxLength="2"
@@ -118,13 +121,13 @@
             android:layout_gravity="center_vertical" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_small"
             android:text="@string/year"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/text_medium"
             android:gravity="end"
-            android:layout_weight="1"
             android:maxLines="1" />
 
         <EditText
@@ -139,11 +142,10 @@
 
         <ImageView
             android:id="@+id/set_date"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
             android:layout_margin="@dimen/margin_small"
-            android:layout_marginStart="@dimen/margin_small"
             android:src="@drawable/time_lapse_ok" />
 
 

@@ -21,19 +21,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@android:color/white"
-                android:paddingStart="@dimen/margin_l"
-                android:paddingEnd="@dimen/margin_l"
+                android:paddingStart="30dp"
+                android:paddingEnd="@dimen/margin_small"
                 android:paddingTop="@dimen/margin_small"
                 android:paddingBottom="@dimen/margin_small">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_small"
                     android:text="@string/day"
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/text_medium"
                     android:gravity="end"
-                    android:layout_weight="1"
                     android:maxLines="1" />
 
                 <EditText
@@ -64,13 +64,12 @@
                     android:overlapAnchor="false" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/year"
                     android:layout_gravity="center_vertical"
                     android:textSize="@dimen/text_medium"
                     android:gravity="end"
-                    android:layout_weight="1"
                     android:maxLines="1" />
 
                 <Spinner
@@ -78,16 +77,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/margin_small"
                     android:spinnerMode="dropdown"
                     android:overlapAnchor="false" />
 
                 <ImageView
                     android:id="@+id/set_time_lapse"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_weight="1"
                     android:layout_margin="@dimen/margin_small"
-                    android:layout_marginStart="@dimen/margin_small"
                     android:src="@drawable/time_lapse_ok" />
 
             </LinearLayout>
