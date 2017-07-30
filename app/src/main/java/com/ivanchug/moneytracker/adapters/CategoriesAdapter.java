@@ -88,6 +88,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     public String remove() {
         final String category = categories.remove(selectedCategoryPosition);
         notifyItemRemoved(selectedCategoryPosition);
+        previousView.setBackgroundResource(R.color.colorLightBlueGrey);
         previousView = null;
         return category;
     }
