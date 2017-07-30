@@ -1,5 +1,6 @@
 package com.ivanchug.moneytracker.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +25,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ivanchug.moneytracker.AddActivity;
@@ -38,12 +38,7 @@ import com.ivanchug.moneytracker.items.Item;
 import com.ivanchug.moneytracker.items.ItemsSortingUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -61,19 +56,15 @@ public class ItemsFragment extends Fragment {
     private ItemsAdapter adapter;
     private RecyclerView items;
 
-    private ArrayAdapter<String> monthsAdapter;
-    private ArrayAdapter<String> yearsAdapter;
 
     private EditText day;
     private String type;
     private View add;
     private View datePanel;
-    private Spinner month;
-    private Spinner year;
+    private EditText month;
+    private EditText year;
     private View setTimeLapse;
 
-    private static volatile List<String> months = new ArrayList<>();
-    private static volatile List<String> years = new ArrayList<>();
 
 
 
@@ -154,20 +145,13 @@ public class ItemsFragment extends Fragment {
         add = view.findViewById(R.id.add_flbutton);
         datePanel = view.findViewById(R.id.date_panel);
         setDatePanelVisible(false);
-        month = (Spinner) view.findViewById(R.id.month);
-        year = (Spinner) view.findViewById(R.id.year);
+        month = (EditText) view.findViewById(R.id.month);
+        year = (EditText) view.findViewById(R.id.year);
         day = (EditText) view.findViewById(R.id.day);
         setTimeLapse = view.findViewById(R.id.set_time_lapse);
+        setTimeLapse.setEnabled(false);
 
 
-        monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
-        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        month.setAdapter(monthsAdapter);
-
-
-        yearsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years);
-        yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        year.setAdapter(yearsAdapter);
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -177,16 +161,25 @@ public class ItemsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //if (TextUtils.isEmpty(month.getSelectedItem().toString()))
-                //   setTimeLapse.setEnabled(TextUtils.isEmpty(day.getText().toString()));
+                boolean monthIsOk = TextUtils.isEmpty(month.getText()) || !month.getText().toString().matches("[0]*");
+                boolean dayIsOk = TextUtils.isEmpty(month.getText()) ? TextUtils.isEmpty(day.getText()) : (TextUtils.isEmpty(day.getText()) || !day.getText().toString().matches("[0]*"));
+                boolean yearIsOk = !TextUtils.isEmpty(year.getText()) && !year.getText().toString().matches("[0]*") && year.getText().toString().length() == 4;
+                setTimeLapse.setEnabled(dayIsOk && monthIsOk && yearIsOk);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 String selectedDay = day.getText().toString();
+                String selectedMonth = month.getText().toString();
                 try {
                     if (Integer.parseInt(selectedDay) > 31)
                         day.setText("31");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if (Integer.parseInt(selectedMonth) > 12)
+                        month.setText("12");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -194,6 +187,8 @@ public class ItemsFragment extends Fragment {
         };
 
         day.addTextChangedListener(textWatcher);
+        month.addTextChangedListener(textWatcher);
+        year.addTextChangedListener(textWatcher);
 
         final GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
 
@@ -242,8 +237,9 @@ public class ItemsFragment extends Fragment {
             public void onClick(View v) {
                 ((MainActivity) getActivity()).setTimeLapse(getSelectedTimeLapse());
                 ((MainActivity) getActivity()).reloadItemsFragments();
-                day.setText("");
                 setDatePanelVisible(false);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         });
 
@@ -286,7 +282,7 @@ public class ItemsFragment extends Fragment {
     public String getSelectedTimeLapse() {
         StringBuilder result = new StringBuilder();
         String selectedDay = day.getText().toString();
-        String selectedMonth = month.getSelectedItem().toString();
+        String selectedMonth = month.getText().toString();
 
         if (!TextUtils.isEmpty(selectedDay)) {
             if (selectedDay.length() == 1)
@@ -295,12 +291,17 @@ public class ItemsFragment extends Fragment {
             result.append(selectedDay).append(".");
         }
 
-        if (!TextUtils.isEmpty(selectedMonth))
+        if (!TextUtils.isEmpty(selectedMonth)) {
+            if (selectedMonth.length() == 1)
+                selectedMonth = "0" + selectedMonth;
+
             result.append(selectedMonth).append(".");
+        }
+
         else
             result.append(".");
 
-        result.append(year.getSelectedItem().toString());
+        result.append(year.getText().toString());
 
 
         return result.toString();
@@ -312,48 +313,6 @@ public class ItemsFragment extends Fragment {
         } else
             datePanel.setVisibility(View.GONE);
 
-    }
-
-    private synchronized void fillMonthsAndYears(List<Item> items) {
-
-        months.clear();
-        years.clear();
-
-        SimpleDateFormat month = new SimpleDateFormat("MM");
-        SimpleDateFormat year = new SimpleDateFormat("yyyy");
-        Set<String> monthsSet = new TreeSet<>();
-        Set<String> yearsSet = new TreeSet<>(Collections.<String>reverseOrder());
-
-        if (!months.contains(""))
-            months.add("");
-
-        monthsSet.add(month.format(new Date()));
-        yearsSet.add(year.format(new Date()));
-        for (Item i : items) {
-            Date date = i.getDate();
-            if (monthsSet.size() < 12)
-                monthsSet.add(month.format(date));
-
-            yearsSet.add(year.format(date));
-        }
-        for (String m : monthsSet) {
-            if (!months.contains(m))
-                months.add(m);
-        }
-
-        for (String y : yearsSet) {
-            if (!years.contains(y))
-                years.add(y);
-        }
-
-        monthsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, months);
-        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.month.setAdapter(monthsAdapter);
-
-
-        yearsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, years);
-        yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.year.setAdapter(yearsAdapter);
     }
 
 
@@ -388,7 +347,6 @@ public class ItemsFragment extends Fragment {
                     adapter.clear();
                     adapter.addAll(ItemsSortingUtil.prepareItemsForItemsFragment(data, timeLapse, getContext(), format, type));
                     ((MainActivity) getActivity()).setAllItems(data, type);
-                    fillMonthsAndYears(data);
                 }
             }
 
