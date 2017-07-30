@@ -329,7 +329,7 @@ public class ItemsFragment extends Fragment {
 
                         try {
                             MoneyTrackerDbHelper dbHelper = new MoneyTrackerDbHelper(getContext());
-                            return dbHelper.getItems(dbHelper.getReadableDatabase(), type);
+                            return dbHelper.getItems(dbHelper.getWritableDatabase(), type);
 
                         } catch (Exception e) {
                             e.printStackTrace();

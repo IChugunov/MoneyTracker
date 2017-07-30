@@ -55,18 +55,15 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
                 "TYPE TEXT);");
 
 
+        addBaseCategory(db, context.getString(R.string.expenses_base_category), Item.TYPE_EXPENSE);
+        addBaseCategory(db, context.getString(R.string.communication_category), Item.TYPE_EXPENSE);
+        addBaseCategory(db, context.getString(R.string.entertainment_category), Item.TYPE_EXPENSE);
+        addBaseCategory(db, context.getString(R.string.car_category), Item.TYPE_EXPENSE);
+        addBaseCategory(db, context.getString(R.string.home_category), Item.TYPE_EXPENSE);
+        addBaseCategory(db, context.getString(R.string.food_category), Item.TYPE_EXPENSE);
 
-
-        ContentValues categoriesValues = new ContentValues();
-        categoriesValues.put(NAME, context.getString(R.string.expenses_base_category));
-        categoriesValues.put(TYPE, Item.TYPE_EXPENSE);
-        db.insert(CATEGORIES, null, categoriesValues);
-
-        ContentValues categoriesValues1 = new ContentValues();
-        categoriesValues1.put(NAME, context.getString(R.string.income_base_category));
-        categoriesValues1.put(TYPE, Item.TYPE_INCOME);
-        db.insert(CATEGORIES, null, categoriesValues1);
-
+        addBaseCategory(db, context.getString(R.string.income_base_category), Item.TYPE_INCOME);
+        addBaseCategory(db, context.getString(R.string.salary_category), Item.TYPE_INCOME);
 
 
     }
@@ -161,6 +158,17 @@ public class MoneyTrackerDbHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
+
+    public String addBaseCategory(SQLiteDatabase db, String category, String type) {
+
+        ContentValues values = new ContentValues();
+        values.put(NAME, category);
+        values.put(TYPE, type);
+        db.insert(CATEGORIES, null, values);
+        return category;
+
+    }
+
 
     public String removeCategory(SQLiteDatabase db, String category, String type) {
         try {

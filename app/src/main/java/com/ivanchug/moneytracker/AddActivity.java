@@ -8,6 +8,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -85,6 +86,11 @@ public class AddActivity extends AppCompatActivity {
         categories = (RecyclerView) findViewById(R.id.categories_in_add_activity);
         adapter = new CategoriesAdapter(this);
         categories.setAdapter(adapter);
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        itemAnimator.setRemoveDuration(1000);
+        categories.setItemAnimator(itemAnimator);
+
         loadCategories();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
