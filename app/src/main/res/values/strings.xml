@@ -31,6 +31,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="expenses_base_category">Расходы без категории</string>
     <string name="income_base_category">Доходы без категории</string>
+    <string name="food_category">Еда</string>
+    <string name="home_category">Жилье</string>
+    <string name="car_category">Машина</string>
+    <string name="entertainment_category">Развлечения</string>
+    <string name="communication_category">Связь</string>
+    <string name="salary_category">Зарплата</string>
     <string name="choose_time_lapse">Выбрать период</string>
     <string name="confirm_remove_category">Удалить выбранную категорию?</string>
     <string name="add_new_category">Добавить новую категорию</string>
